@@ -1,0 +1,10 @@
+{
+    "Name": "PaimonDB",
+    "Port": 12002,
+    "Mongo": {
+        "username": null,
+        "host": "localhost",
+        "password": null,
+        "port": 27017
+    }
+}
