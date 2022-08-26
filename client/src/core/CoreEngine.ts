@@ -28,7 +28,8 @@ class CoreEngine {
         }
         console.log("CoreEngine init start");
         let startTime = new Date();
-        this.textMap = await this.readJsonResource("TextMapCHS");
+        //this.textMap = await this.readJsonResource("TextMapCHS");
+        this.textMap = await this.readJsonResource("TextMapCHSMini");
         await this.upgrade.init();
         await this.affix.init();
         await this.skill.init();
@@ -36,6 +37,8 @@ class CoreEngine {
         await this.avatar.init();
         await this.relic.init();
         this.textMap = undefined;
+        //console.log(JSON.stringify(this.textMapMini));
+        //this.textMapMini = undefined;
         this.inited = true;
         let diff = new Date().valueOf() - startTime.valueOf();
         console.log(`CoreEngine init finish in ${diff} ms`);
@@ -52,6 +55,7 @@ class CoreEngine {
     }
 
     textMap: any
+    //textMapMini = {};
 
     getText(hash: number): string {
         if (!this.textMap || !hash) {
@@ -61,6 +65,7 @@ class CoreEngine {
             if (!s) {
                 return "";
             } else {
+                //this.textMapMini[hash.toString()] = s;
                 return s;
             }
         }
