@@ -54,8 +54,7 @@ export default class RelicSetData {
     }
 
     newInfo(slot: RelicSlotType, rank: number): RelicInfo {
-        let data = this.slots[slot.index]!;
-        return new RelicInfo(data, rank);
+        return new RelicInfo(this.id, slot.index, rank);
     }
 
     toString(): string {
