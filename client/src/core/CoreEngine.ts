@@ -42,7 +42,7 @@ class CoreEngine {
     }
 
     async readJsonResource(filename: string): Promise<any> {
-        let url = `config/${filename}.json`;
+        let url = `config/R9624836_S9598838_D9617080/${filename}.json`;
         let resp = await axios.get(url);
         if (resp.status != 200) {
             throw new Error(`Read json resource ${url} failed: ${resp.status}`);
