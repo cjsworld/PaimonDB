@@ -19,6 +19,15 @@ export default class RelicModule implements CoreEngineModule {
                 continue;
             }
             let propType = PropType.getByConfigName(item.propType);
+            if (propType.id.indexOf("SubHurt") >= 0) {
+                continue; //目前没有抗性主词条
+            }
+            if (slot.index >= 2) {
+                //沙漏，杯子，头 出的攻击、防御、生命都是百分比
+                if (propType == PropType.HP || propType == PropType.ATK || propType == PropType.DEF) {
+                    continue;
+                }
+            }
             slot.mainPropTypes.push(propType);
         }
 

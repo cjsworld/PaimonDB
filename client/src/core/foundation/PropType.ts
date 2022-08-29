@@ -39,15 +39,15 @@ export default class PropType {
     static PhysicalAddHurt = new PropType("PhysicalAddHurt", "物理伤害加成", true, "FIGHT_PROP_PHYSICAL_ADD_HURT");
 
 
-    static SubHurt = new PropType("AddHurt", "伤害减免", true, "FIGHT_PROP_SUB_HURT");
-    static FireSubHurt = new PropType("FireAddHurt", "火元素抗性", true, "FIGHT_PROP_FIRE_SUB_HURT");
-    static WaterSubHurt = new PropType("WaterAddHurt", "水元素抗性", true, "FIGHT_PROP_WATER_SUB_HURT");
-    static WindSubHurt = new PropType("WindAddHurt", "风元素抗性", true, "FIGHT_PROP_WIND_SUB_HURT");
-    static ElecSubHurt = new PropType("ElecAddHurt", "雷元素抗性", true, "FIGHT_PROP_ELEC_SUB_HURT");
-    static GrassSubHurt = new PropType("GrassAddHurt", "草元素抗性", true, "FIGHT_PROP_GRASS_SUB_HURT");
-    static IceSubHurt = new PropType("IceAddHurt", "冰元素抗性", true, "FIGHT_PROP_ICE_SUB_HURT");
-    static RockSubHurt = new PropType("RockAddHurt", "岩元素抗性", true, "FIGHT_PROP_ROCK_SUB_HURT");
-    static PhysicalSubHurt = new PropType("PhysicalAddHurt", "物理抗性", true, "FIGHT_PROP_PHYSICAL_SUB_HURT");
+    static SubHurt = new PropType("SubHurt", "伤害减免", true, "FIGHT_PROP_SUB_HURT");
+    static FireSubHurt = new PropType("FireSubHurt", "火元素抗性", true, "FIGHT_PROP_FIRE_SUB_HURT");
+    static WaterSubHurt = new PropType("WaterSubHurt", "水元素抗性", true, "FIGHT_PROP_WATER_SUB_HURT");
+    static WindSubHurt = new PropType("WindSubHurt", "风元素抗性", true, "FIGHT_PROP_WIND_SUB_HURT");
+    static ElecSubHurt = new PropType("ElecSubHurt", "雷元素抗性", true, "FIGHT_PROP_ELEC_SUB_HURT");
+    static GrassSubHurt = new PropType("GrassSubHurt", "草元素抗性", true, "FIGHT_PROP_GRASS_SUB_HURT");
+    static IceSubHurt = new PropType("IceSubHurt", "冰元素抗性", true, "FIGHT_PROP_ICE_SUB_HURT");
+    static RockSubHurt = new PropType("RockSubHurt", "岩元素抗性", true, "FIGHT_PROP_ROCK_SUB_HURT");
+    static PhysicalSubHurt = new PropType("PhysicalSubHurt", "物理抗性", true, "FIGHT_PROP_PHYSICAL_SUB_HURT");
 
     static HealAdd = new PropType("HealAdd", "治疗加成", true, "FIGHT_PROP_HEAL_ADD");
     static HealedAdd = new PropType("HealedAdd", "受治疗加成", true, "FIGHT_PROP_HEALED_ADD");
