@@ -1,5 +1,4 @@
 import AffixSetData from '@/core/affix/AffixSetData';
-import AffixData from '@/core/affix/AffixData';
 import CoreEngine from '../CoreEngine';
 import RelicSlotData from './RelicSlotData';
 import RelicSlotType from './RelicSlotType';

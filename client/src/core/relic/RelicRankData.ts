@@ -52,4 +52,12 @@ export default class RelicRankData {
     getSubProp(propType: PropType, value: number) {
         return propType.by(this.subProps.get(propType)!.getPreciseValue(value));
     }
+
+    getSubPropTypes(): PropType[] {
+        let list = new Array<PropType>();
+        for (let it of this.subProps.keys()) {
+            list.push(it);
+        }
+        return list;
+    }
 }

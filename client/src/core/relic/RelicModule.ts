@@ -71,4 +71,12 @@ export default class RelicModule implements CoreEngineModule {
             this.sets.get(item.suitId)!.allRanks.push(item.level);
         }
     }
+
+    getRelicOptions(): RelicSetData[] {
+        let list = new Array<RelicSetData>();
+        for (let it of this.sets.values()) {
+            list.push(it);
+        }
+        return list;
+    }
 }

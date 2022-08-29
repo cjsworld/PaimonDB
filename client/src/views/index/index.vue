@@ -7,8 +7,8 @@
                     <el-option v-for="item in avatarOptions" :key="item.id" :value="item.id"
                                :label="item.name" class="avatar-option">
                         <el-avatar :src="item.icon"></el-avatar>
-                        <div :class="`elem-${item.elemType.id.toLowerCase()}`">{{item.name}}</div>
-                        <span style="float: right">{{`${item.rank}★`}}</span>
+                        <div :class="`elem-${item.elemType.id.toLowerCase()}`">{{ item.name }}</div>
+                        <span style="float: right">{{ `${item.rank}★` }}</span>
                     </el-option>
                     <template slot="prefix">
                         <el-avatar class="avatar-prefix" :src="avatarInfo.data ? avatarInfo.data.icon : ''" alt=""></el-avatar>
@@ -54,8 +54,8 @@
                     <el-option v-for="item in weaponOptions" :key="item.id" :value="item.id"
                                :label="item.name" class="avatar-option">
                         <el-avatar :src="item.icon"></el-avatar>
-                        <div>{{item.name}}</div>
-                        <span style="float: right">{{`${item.rank}★`}}</span>
+                        <div>{{ item.name }}</div>
+                        <span style="float: right">{{ `${item.rank}★` }}</span>
                     </el-option>
                     <template slot="prefix">
                         <el-avatar class="avatar-prefix" :src="weaponInfo.data ? weaponInfo.data.icon : ''" alt=""></el-avatar>
@@ -86,10 +86,12 @@
                 </el-select>
             </el-form-item>
         </el-form>
+        <el-divider content-position="left">圣遗物配置</el-divider>
+        <relic></relic>
         <el-divider content-position="left">伤害计算结果</el-divider>
         <el-button type="primary" @click="calcDamage">计算伤害</el-button>
         <div>
-            <label>暴击伤害：{{damage}}</label>
+            <label>暴击伤害：{{ damage }}</label>
         </div>
     </div>
 
@@ -103,8 +105,10 @@ import PropType from '@/core/foundation/PropType';
 import RelicSlotType from '@/core/relic/RelicSlotType';
 import MonsterInfo from '@/core/monster/MonsterInfo';
 import CalcContext from '@/core/foundation/CalcContext';
+import relic from "@/views/index/components/relic";
 
 export default {
+    components: {relic},
     data() {
         return {
             avatarOptions: [],
@@ -258,57 +262,62 @@ export default {
 
 <style scoped>
 
-    ::v-deep .avatar-select .el-input__inner {
-        padding-left: 38px;
-        vertical-align: middle;
-    }
+::v-deep .avatar-select .el-input__inner {
+    padding-left: 38px;
+    vertical-align: middle;
+}
 
-    .avatar-select .avatar-prefix {
-        vertical-align: middle;
-        width: 25px;
-        height: 25px;
-    }
+.avatar-select .avatar-prefix {
+    vertical-align: middle;
+    width: 25px;
+    height: 25px;
+}
 
-    .avatar-option {
-        margin: 5px 0;
-    }
-
-
-    .avatar-option .el-avatar {
-        width: 30px;
-        height: 30px;
-        vertical-align: middle
-    }
-
-    .avatar-option div {
-        display: inline-block;
-        margin-left: 10px;
-        vertical-align: middle
-    }
+.avatar-option {
+    margin: 5px 0;
+}
 
 
+.avatar-option .el-avatar {
+    width: 30px;
+    height: 30px;
+    vertical-align: middle
+}
 
-    .elem-fire {
-        color: rgb(220, 20, 60);
-    }
-    .elem-ice {
-        color: rgb(0, 191, 255);
-    }
-    .elem-elec {
-        color: rgb(138, 43, 226);
-    }
-    .elem-rock {
-        color: rgb(218, 165, 32);
-    }
-    .elem-grass {
-        color: rgb(154, 205, 50);
-    }
-    .elem-water {
-        color: rgb(30, 144, 255);
-    }
-    .elem-wind {
-        color: rgb(102, 205, 170);
-    }
+.avatar-option div {
+    display: inline-block;
+    margin-left: 10px;
+    vertical-align: middle
+}
+
+
+.elem-fire {
+    color: rgb(220, 20, 60);
+}
+
+.elem-ice {
+    color: rgb(0, 191, 255);
+}
+
+.elem-elec {
+    color: rgb(138, 43, 226);
+}
+
+.elem-rock {
+    color: rgb(218, 165, 32);
+}
+
+.elem-grass {
+    color: rgb(154, 205, 50);
+}
+
+.elem-water {
+    color: rgb(30, 144, 255);
+}
+
+.elem-wind {
+    color: rgb(102, 205, 170);
+}
 
 
 </style>
