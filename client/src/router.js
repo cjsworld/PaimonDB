@@ -3,6 +3,7 @@ import Router from 'vue-router'
 //Base
 import layout from './views/layout/Layout'
 import store from "./store"
+import CoreEngine from "@/core/CoreEngine";
 
 Vue.use(Router);
 
@@ -87,6 +88,7 @@ router.history.transitionTo = function (location, onComplete) {
 
 router.beforeEach(async (to, from, next) => {
     window.document.title = '系统-' + to.name;
+    await CoreEngine.init();
     let key = to.meta.key;
     if (key === "") {
         next();

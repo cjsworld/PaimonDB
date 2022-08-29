@@ -40,6 +40,10 @@ export default class RelicSlotType {
 
     mainPropTypes = new Array<PropType>();
 
+    get icon(): string {
+        return `relic/0_${this.index}.png`;
+    }
+
     private constructor(id: string, name: string, index: number, mainDepotId: number) {
         RelicSlotType.All.push(this);
         this.id = id;

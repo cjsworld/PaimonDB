@@ -5,6 +5,7 @@ import CoreEngine from "../CoreEngine";
 import RelicRankData from "./RelicRankData";
 import RelicSlotData from "./RelicSlotData";
 import RelicSlotType from "@/core/relic/RelicSlotType";
+import RelicSetData from "@/core/relic/RelicSetData";
 
 /**
  * 圣遗物信息
@@ -30,11 +31,37 @@ export default class RelicInfo {
      */
     level: number;
 
+    /**
+     * 主属性类型
+     */
+    mainPropTypeId: string;
+
+    /**
+     * 副词条属性
+     */
+    subPropType1: string | undefined;
+    subPropValue1: number | undefined;
+
+    subPropType2: string | undefined;
+    subPropValue2: number | undefined;
+
+    subPropType3: string | undefined;
+    subPropValue3: number | undefined;
+
+    subPropType4: string | undefined;
+    subPropValue4: number | undefined;
+
 
     /**
      * 主属性类型
      */
-    mainPropType: PropType;
+    get mainPropType(): PropType {
+        return PropType.getById(this.mainPropTypeId);
+    }
+
+    set mainPropType(value: PropType) {
+        this.mainPropTypeId = value.id;
+    }
 
 
     /**
@@ -46,8 +73,15 @@ export default class RelicInfo {
     /**
      * 圣遗物槽位配置数据
      */
+    get set(): RelicSetData {
+        return CoreEngine.relic.sets.get(this.setId)!!;
+    }
+
+    /**
+     * 圣遗物槽位配置数据
+     */
     get slot(): RelicSlotData {
-        return CoreEngine.relic.sets.get(this.setId)!!.slots[this.slotIndex]!!;
+        return this.set.slots[this.slotIndex]!!;
     }
 
 
@@ -70,7 +104,7 @@ export default class RelicInfo {
         this.setId = setId;
         this.slotIndex = slotIndex;
         this.rank = rank;
-        this.mainPropType = RelicSlotType.getByIndex(this.slotIndex).mainPropTypes[0];
+        this.mainPropTypeId = RelicSlotType.getByIndex(this.slotIndex).mainPropTypes[0].id;
         this.level = 20;
         this.subProp = new PropPanel();
     }

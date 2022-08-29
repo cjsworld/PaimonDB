@@ -1,14 +1,14 @@
 <template>
     <el-form ref="relicForm" :model="relicInfo" :rules="relicRules" label-width="120px">
         <el-form-item label="选择圣遗物套装">
-            <el-select v-model="relicInfo.id" @change="onRelicChange" filterable style="width: 200px" class="avatar-select">
+            <el-select v-model="relicInfo.setId" @change="onRelicChange" filterable style="width: 200px" class="avatar-select">
                 <el-option v-for="(item,_) in relicOptions" :key="item.id" :value="item.id"
                            :label="item.name" class="avatar-option">
                     <el-avatar :src="item.icon"></el-avatar>
                     <div>{{ item.name }}</div>
                 </el-option>
                 <template slot="prefix">
-                    <el-avatar class="avatar-prefix" :src="relicInfo.data ? relicInfo.data.icon : ''" alt=""></el-avatar>
+                    <el-avatar class="avatar-prefix" :src="relicInfo.set ? relicInfo.set.icon : ''" alt=""></el-avatar>
                 </template>
             </el-select>
         </el-form-item>
@@ -21,7 +21,7 @@
         <el-form-item label="选择圣遗物位置">
             <el-radio-group v-model="relicInfo.slotIndex" size="mini" class="relic-radio" @change="slotChange">
                 <el-radio v-for="s in slots.values()" :key="s.index" :label="s.index">
-                    <el-avatar class="avatar-prefix" :src="relicInfo.data ? relicInfo.data.icon : ''" alt=""></el-avatar>
+                    <el-avatar class="avatar-prefix" :src="s.icon" alt=""></el-avatar>
                 </el-radio>
             </el-radio-group>
         </el-form-item>
@@ -53,6 +53,8 @@
 <script>
 import CoreEngine from "@/core/CoreEngine";
 import RelicSlotType from "@/core/relic/RelicSlotType";
+import RelicInfo from "@/core/relic/RelicInfo";
+
 
 export default {
     name: "Relic",
@@ -65,32 +67,20 @@ export default {
             subProps: [],
 
             relicRules: {},
-            relicInfo: {
-                id: undefined,
-                rank: 4,
-                slotIndex: undefined,
-                level: undefined,
-                mainProp: undefined,
-                mainValue: undefined,
-                subProp1: undefined,
-                subValue1: undefined,
-                subProp2: undefined,
-                subValue2: undefined,
-                subProp3: undefined,
-                subValue3: undefined,
-                subProp4: undefined,
-                subValue4: undefined
-            }
+            relicInfo: new RelicInfo(0, 0, 5)
         }
     },
     async created() {
         this.slots = RelicSlotType.All
         this.relicOptions = CoreEngine.relic.getRelicOptions()
+        if (this.relicOptions.length > 0) {
+            this.relicInfo.setId = this.relicOptions[0].id;
+        }
         this.rankChange(this.relicInfo.rank)
     },
     methods: {
         onRelicChange() {
-            this.relicData = CoreEngine.relic.sets.get(this.relicInfo.id)
+            this.relicData = CoreEngine.relic.sets.get(this.relicInfo.setId)
             // this.relicInfo.mainProp = undefined
             // this.mainProps = RelicSlotType.getByIndex(this.relicInfo.slotIndex).mainPropTypes
         },

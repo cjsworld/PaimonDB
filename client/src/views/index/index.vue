@@ -130,8 +130,7 @@ export default {
             damage: 0
         };
     },
-    async created() {
-        await CoreEngine.init()
+    created() {
         this.avatarOptions = CoreEngine.avatar.getAvatarOptions();
         this.avatarInfo = new AvatarInfo(10000037);
         this.weaponInfo = new WeaponInfo(15502);
