@@ -21,10 +21,16 @@ export default class Prop {
     }
 
     get displayValue(): number {
+        let value;
         if (this.type.isPercent) {
-            return this.value * 100;
+            value = this.value * 100;
         } else {
-            return this.value;
+            value = this.value;
+        }
+        if (value % 1 != 0) {
+            return value.toFixed(1);
+        } else {
+            return value;
         }
     }
 

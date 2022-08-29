@@ -1,6 +1,6 @@
 <template>
-    <el-form ref="relicForm" :model="relicInfo" :rules="relicRules" label-width="120px">
-        <el-form-item label="选择圣遗物套装">
+    <el-form ref="relicForm" :model="relicInfo" :rules="relicRules" label-width="60px" size="small">
+        <el-form-item label="套装">
             <el-select v-model="relicInfo.setId" @change="onRelicChange" filterable style="width: 200px" class="avatar-select">
                 <el-option v-for="(item,_) in relicOptions" :key="item.id" :value="item.id"
                            :label="item.name" class="avatar-option">
@@ -8,44 +8,45 @@
                     <div>{{ item.name }}</div>
                 </el-option>
                 <template slot="prefix">
-                    <el-avatar class="avatar-prefix" :src="relicInfo.set ? relicInfo.set.icon : ''" alt=""></el-avatar>
+                    <el-avatar class="avatar-prefix" :src="relicInfo.setData ? relicInfo.setData.icon : ''" alt=""></el-avatar>
                 </template>
             </el-select>
         </el-form-item>
-        <el-form-item label="选择圣遗物星级">
+        <el-form-item label="星级">
             <el-radio-group v-model="relicInfo.rank" size="small" @change="rankChange">
                 <el-radio-button :label="4">4星</el-radio-button>
                 <el-radio-button :label="5">5星</el-radio-button>
             </el-radio-group>
         </el-form-item>
-        <el-form-item label="选择圣遗物位置">
+        <el-form-item label="等级">
+            <el-input-number v-model="relicInfo.level" :min="1" :max="20" controls-position="right"
+                             style="width: 100px"></el-input-number>
+        </el-form-item>
+        <el-form-item label="位置">
             <el-radio-group v-model="relicInfo.slotIndex" size="mini" class="relic-radio" @change="slotChange">
                 <el-radio v-for="s in slots.values()" :key="s.index" :label="s.index">
-                    <el-avatar class="avatar-prefix" :src="s.icon" alt=""></el-avatar>
+                    <el-image class="slot-img" :src="s.icon" alt=""></el-image>
                 </el-radio>
             </el-radio-group>
         </el-form-item>
-        <el-form-item label="选择圣遗物等级">
-            <el-input-number v-model="relicInfo.level" :min="1" :max="20" controls-position="right"
-                             style="width: 120px"></el-input-number>
-        </el-form-item>
-        <el-form-item label="圣遗物主属性">
-            <el-select v-model="relicInfo.mainProp" filterable style="width: 200px">
-                <el-option v-for="(item,_) in mainProps" :key="item.id" :value="item.id"
+        <el-form-item label="主属性">
+            <el-select v-model="relicInfo.mainPropTypeId" filterable style="width: 130px" :disabled="mainProps.length === 1">
+                <el-option v-for="item in mainProps" :key="item.id" :value="item.id"
                            :label="item.name">
                 </el-option>
             </el-select>
-            <el-input-number v-model="relicInfo.mainValue" controls-position="right"
-                             style="width: 120px;margin-left: 5px"></el-input-number>
+            <el-input v-model="relicInfo.getMainProp().displayValue" readonly
+                      style="width: 65px;margin-left: 5px;text-align: center"></el-input>
         </el-form-item>
-        <el-form-item :label="index === 1 ? `圣遗物副属性` : ''" v-for="index in 4" :key="index">
-            <el-select v-model="relicInfo[`subProp${index}`]" filterable style="width: 200px">
-                <el-option v-for="(item,_) in subProps" :key="item.id" :value="item.id"
+        <el-form-item :label="index === 1 ? `副属性` : ''" v-for="index in 4" :key="index">
+            <el-select v-model="relicInfo[`subPropType${index}`]" filterable style="width: 130px">
+                <el-option v-for="item in subProps" :key="item.id" :value="item.id"
                            :label="item.name">
                 </el-option>
             </el-select>
-            <el-input-number v-model="relicInfo[`subValue${index}`]" controls-position="right"
-                             style="width: 120px;margin-left: 5px"></el-input-number>
+            <el-input-number v-model="relicInfo[`subPropValue${index}`]"
+                             :controls="false"
+                             style="width: 65px;margin-left: 5px"></el-input-number>
         </el-form-item>
     </el-form>
 </template>
@@ -65,40 +66,46 @@ export default {
             slots: [],
             mainProps: [],
             subProps: [],
-
             relicRules: {},
-            relicInfo: new RelicInfo(0, 0, 5)
+        }
+    },
+    props: {
+        slotIndex: {
+            default: undefined,
+            type: Number
+        },
+        relicInfo: {
+            default: () => new RelicInfo(0, 0, 5),
+            type: RelicInfo
         }
     },
     async created() {
-        this.slots = RelicSlotType.All
+        if (this.slotIndex !== undefined) {
+            this.slots = [RelicSlotType.getByIndex(this.slotIndex)]
+        } else {
+            this.slots = RelicSlotType.All
+        }
         this.relicOptions = CoreEngine.relic.getRelicOptions()
-        if (this.relicOptions.length > 0) {
+        if (!this.relicInfo.setId && this.relicOptions.length > 0) {
             this.relicInfo.setId = this.relicOptions[0].id;
         }
         this.rankChange(this.relicInfo.rank)
+        this.slotChange(this.relicInfo.slotIndex)
     },
     methods: {
         onRelicChange() {
             this.relicData = CoreEngine.relic.sets.get(this.relicInfo.setId)
-            // this.relicInfo.mainProp = undefined
-            // this.mainProps = RelicSlotType.getByIndex(this.relicInfo.slotIndex).mainPropTypes
         },
         rankChange(rank) {
             this.subProps = [];
-            for (let i = 1; i < 5; i++) {
-                this.relicInfo[`subProp${i}`] = undefined
-                this.relicInfo[`subValue${i}`] = undefined
-            }
-            this.relicInfo.mainProp = undefined
             let rankData = CoreEngine.relic.ranks.get(rank);
             if (rankData) {
                 this.subProps = rankData.getSubPropTypes()
             }
         },
-        slotChange() {
-            this.relicInfo.mainProp = undefined
-            this.mainProps = RelicSlotType.getByIndex(this.relicInfo.slotIndex).mainPropTypes
+        slotChange(slotIndex) {
+            this.relicInfo.mainPropTypeId = RelicSlotType.getByIndex(slotIndex).mainPropTypes[0].id;
+            this.mainProps = RelicSlotType.getByIndex(slotIndex).mainPropTypes
         }
     }
 }
@@ -133,12 +140,30 @@ export default {
     vertical-align: middle
 }
 
+::v-deep .relic-radio label {
+    margin-right: 0px;
+}
+
 ::v-deep .relic-radio .el-radio__input {
     display: none;
 }
 
-::v-deep .relic-radio .is-checked .el-avatar {
+::v-deep .relic-radio .el-radio__label {
+    padding-left: 0;
+}
+
+.slot-img {
+    width: 40px;
+    height: 40px;
+}
+
+::v-deep .relic-radio .is-checked .el-image {
     border: 1px solid #409eff;
+}
+
+::v-deep .el-select .el-input__inner {
+    background-color: unset;
+    color: unset;
 }
 
 </style>

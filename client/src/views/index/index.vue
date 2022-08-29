@@ -87,11 +87,13 @@
             </el-form-item>
         </el-form>
         <el-divider content-position="left">圣遗物配置</el-divider>
-        <el-card class="relic-card" v-for="index in 1" :key="index">
-            <relic></relic>
+        <el-card class="relic-card" v-for="(r,index) in relicList" :key="index">
+            <relic :ref="`relic-${index}`" :slot-index="index" :relic-info="r"></relic>
         </el-card>
         <el-divider content-position="left">伤害计算结果</el-divider>
         <el-button type="primary" @click="calcDamage">计算伤害</el-button>
+        <br>
+        <br>
         <div>
             <label>暴击伤害：{{ damage }}</label>
         </div>
@@ -108,6 +110,7 @@ import RelicSlotType from '@/core/relic/RelicSlotType';
 import MonsterInfo from '@/core/monster/MonsterInfo';
 import CalcContext from '@/core/foundation/CalcContext';
 import relic from "@/views/index/components/relic";
+import RelicInfo from "@/core/relic/RelicInfo";
 
 export default {
     components: {relic},
@@ -128,7 +131,7 @@ export default {
             weaponInfo: new WeaponInfo(0),
 
             skillOptionIndex: null,
-
+            relicList: [],
             damage: 0
         };
     },
@@ -136,6 +139,7 @@ export default {
         this.avatarOptions = CoreEngine.avatar.getAvatarOptions();
         this.avatarInfo = new AvatarInfo(10000037);
         this.weaponInfo = new WeaponInfo(15502);
+        this.relicList = this.testDefaultRelic();
         this.onAvatarChange();
     },
     methods: {
@@ -170,14 +174,8 @@ export default {
         onWeaponChange() {
 
         },
-        calcDamage() {
-            if (!this.avatarInfo.data || !this.weaponInfo.data) {
-                this.damage = 0;
-                return;
-            }
-            let info = this.avatarInfo;
-            info.weapon = this.weaponInfo;
-
+        testDefaultRelic() {
+            let list = [];
             let relicSet = CoreEngine.relic.sets.get(14001); //冰套
             let relic;
             //花
@@ -186,7 +184,7 @@ export default {
             relic.setSubProp(2, PropType.PercentATK, 0.152);
             relic.setSubProp(3, PropType.ATK, 37);
             relic.setSubProp(4, PropType.CritHurt, 0.202);
-            info.relic.putRelic(relic);
+            list.push(relic);
 
             //羽毛
             relic = relicSet.newInfo(RelicSlotType.Leather, 5);
@@ -194,7 +192,7 @@ export default {
             relic.setSubProp(2, PropType.CritHurt, 0.326);
             relic.setSubProp(3, PropType.CritRate, 0.039);
             relic.setSubProp(4, PropType.HP, 269);
-            info.relic.putRelic(relic);
+            list.push(relic);
 
             //沙漏
             relic = relicSet.newInfo(RelicSlotType.Sand, 5);
@@ -203,7 +201,7 @@ export default {
             relic.setSubProp(2, PropType.ChargeRate, 0.091);
             relic.setSubProp(3, PropType.ATK, 35);
             relic.setSubProp(4, PropType.CritHurt, 0.148);
-            info.relic.putRelic(relic);
+            list.push(relic);
 
             //杯子
             relic = relicSet.newInfo(RelicSlotType.Cup, 5);
@@ -212,7 +210,7 @@ export default {
             relic.setSubProp(2, PropType.CritRate, 0.031);
             relic.setSubProp(3, PropType.PercentHP, 0.122);
             relic.setSubProp(4, PropType.CritHurt, 0.187);
-            info.relic.putRelic(relic);
+            list.push(relic);
 
             //头
             relic = relicSet.newInfo(RelicSlotType.Cap, 5);
@@ -221,8 +219,21 @@ export default {
             relic.setSubProp(2, PropType.HP, 538);
             relic.setSubProp(3, PropType.ATK, 33);
             relic.setSubProp(4, PropType.CritRate, 0.066);
-            info.relic.putRelic(relic);
+            list.push(relic);
 
+            return list;
+        },
+        calcDamage() {
+            console.log(this.relicList)
+            if (!this.avatarInfo.data || !this.weaponInfo.data) {
+                this.damage = 0;
+                return;
+            }
+            let info = this.avatarInfo;
+            info.weapon = this.weaponInfo;
+            for (let relic of this.relicList) {
+                info.relic.putRelic(relic);
+            }
             let panel = info.getTotalPanel();
 
             //Trace.WriteLine(panel);

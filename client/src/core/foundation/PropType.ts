@@ -53,7 +53,7 @@ export default class PropType {
     static HealedAdd = new PropType("HealedAdd", "受治疗加成", true, "FIGHT_PROP_HEALED_ADD");
     static ShieldUp = new PropType("ShieldUp", "护盾强效", true, "FIGHT_PROP_SHIELD_COST_MINUS_RATIO");
 
-    static Unknown = new PropType("Unknown", "未知", false, null);
+    static Unknown = new PropType("", "未知", false, null);
 
 
     id: string;
