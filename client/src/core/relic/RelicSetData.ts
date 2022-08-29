@@ -34,6 +34,10 @@ export default class RelicSetData {
      */
     allRanks = new Array<number>();
 
+    get icon(): string {
+        return this.slots.find(e => e)!!.icon;
+    }
+
     constructor(data: any, relicDict: Map<number, any>) {
         this.id = data.setId;
         this.affixSet = CoreEngine.affix.affixs.get(data.EquipAffixId)!;
