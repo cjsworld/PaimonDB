@@ -4,20 +4,20 @@ import PropType from "./PropType";
  * 属性数据
  */
 export default class Prop {
-    type: PropType;
+    typeId: string;
     value: number;
 
     constructor(type: PropType, value: number) {
-        this.type = type;
+        this.typeId = type.id;
         this.value = value;
     }
 
-    get typeId(): string {
-        return this.type.id;
+    get type(): PropType {
+        return PropType.getById(this.typeId);
     }
 
-    set typeId(value: string) {
-        this.type = PropType.getById(value);
+    set type(type: PropType) {
+        this.typeId = type.id;
     }
 
     get displayValue(): number {

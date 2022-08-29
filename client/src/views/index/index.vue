@@ -110,7 +110,6 @@ import RelicSlotType from '@/core/relic/RelicSlotType';
 import MonsterInfo from '@/core/monster/MonsterInfo';
 import CalcContext from '@/core/foundation/CalcContext';
 import relic from "@/views/index/components/relic";
-import RelicInfo from "@/core/relic/RelicInfo";
 
 export default {
     components: {relic},
@@ -224,7 +223,6 @@ export default {
             return list;
         },
         calcDamage() {
-            console.log(this.relicList)
             if (!this.avatarInfo.data || !this.weaponInfo.data) {
                 this.damage = 0;
                 return;

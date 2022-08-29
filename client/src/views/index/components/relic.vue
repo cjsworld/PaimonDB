@@ -1,5 +1,5 @@
 <template>
-    <el-form ref="relicForm" :model="relicInfo" :rules="relicRules" label-width="60px" size="small">
+    <el-form ref="relicForm" :model="relicInfo" :rules="relicRules" label-width="60px" size="small" style="position: relative">
         <el-form-item label="套装">
             <el-select v-model="relicInfo.setId" @change="onRelicChange" filterable style="width: 200px" class="avatar-select">
                 <el-option v-for="(item,_) in relicOptions" :key="item.id" :value="item.id"
@@ -24,7 +24,7 @@
         </el-form-item>
         <el-form-item label="位置">
             <el-radio-group v-model="relicInfo.slotIndex" size="mini" class="relic-radio" @change="slotChange">
-                <el-radio v-for="s in slots.values()" :key="s.index" :label="s.index">
+                <el-radio v-for="s in slots" :key="s.index" :label="s.index">
                     <el-image class="slot-img" :src="s.icon" alt=""></el-image>
                 </el-radio>
             </el-radio-group>
@@ -39,15 +39,16 @@
                       style="width: 65px;margin-left: 5px;text-align: center"></el-input>
         </el-form-item>
         <el-form-item :label="index === 1 ? `副属性` : ''" v-for="index in 4" :key="index">
-            <el-select v-model="relicInfo[`subPropType${index}`]" filterable style="width: 130px">
+            <el-select v-model="relicInfo[`subProp${index}`].typeId" filterable style="width: 130px">
                 <el-option v-for="item in subProps" :key="item.id" :value="item.id"
                            :label="item.name">
                 </el-option>
             </el-select>
-            <el-input-number v-model="relicInfo[`subPropValue${index}`]"
+            <el-input-number v-model="relicInfo[`subProp${index}`].displayValue"
                              :controls="false"
                              style="width: 65px;margin-left: 5px"></el-input-number>
         </el-form-item>
+        <el-image :src="relicInfo.icon" style="position: absolute;right: 10px;top: 60px;"></el-image>
     </el-form>
 </template>
 
@@ -55,7 +56,6 @@
 import CoreEngine from "@/core/CoreEngine";
 import RelicSlotType from "@/core/relic/RelicSlotType";
 import RelicInfo from "@/core/relic/RelicInfo";
-
 
 export default {
     name: "Relic",
@@ -151,16 +151,16 @@ export default {
 }
 
 ::v-deep .relic-radio .el-radio__label {
-    padding-left: 0;
+    padding-left: 5px;
 }
 
 .slot-img {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
 }
 
 ::v-deep .relic-radio .is-checked .el-image {
-    border: 1px solid #409eff;
+    border: 2px solid #409eff;
 }
 
 ::v-deep .el-select .el-input__inner {

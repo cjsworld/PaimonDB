@@ -50,17 +50,10 @@ export default class RelicInfo {
     /**
      * 副词条属性
      */
-    subPropType1: string | undefined;
-    subPropValue1: number = 0;
-
-    subPropType2: string | undefined;
-    subPropValue2: number = 0;
-
-    subPropType3: string | undefined;
-    subPropValue3: number = 0;
-
-    subPropType4: string | undefined;
-    subPropValue4: number = 0;
+    subProp1 = PropType.Unknown.by(0);
+    subProp2 = PropType.Unknown.by(0);
+    subProp3 = PropType.Unknown.by(0);
+    subProp4 = PropType.Unknown.by(0);
 
 
     /**
@@ -113,23 +106,22 @@ export default class RelicInfo {
      */
     getSubProps(): PropPanel {
         let panel = new PropPanel();
-        if (this.subPropType1) {
-            panel.addProp(this.rankData.getSubProp(PropType.getById(this.subPropType1), this.subPropValue1));
+        if (this.subProp1.type != PropType.Unknown) {
+            panel.addProp(this.rankData.getSubProp(this.subProp1.type, this.subProp1.value));
         }
-        if (this.subPropType2) {
-            panel.addProp(this.rankData.getSubProp(PropType.getById(this.subPropType2), this.subPropValue2));
+        if (this.subProp2.type != PropType.Unknown) {
+            panel.addProp(this.rankData.getSubProp(this.subProp2.type, this.subProp2.value));
         }
-        if (this.subPropType3) {
-            panel.addProp(this.rankData.getSubProp(PropType.getById(this.subPropType3), this.subPropValue3));
+        if (this.subProp3.type != PropType.Unknown) {
+            panel.addProp(this.rankData.getSubProp(this.subProp3.type, this.subProp3.value));
         }
-        if (this.subPropType4) {
-            panel.addProp(this.rankData.getSubProp(PropType.getById(this.subPropType4), this.subPropValue4));
+        if (this.subProp4.type != PropType.Unknown) {
+            panel.addProp(this.rankData.getSubProp(this.subProp4.type, this.subProp4.value));
         }
         return panel;
     }
 
     setSubProp(index: number, type: PropType, value: number) {
-        this[`subPropType${index}`] = type.id;
-        this[`subPropValue${index}`] = value;
+        this[`subProp${index}`] = type.by(value);
     }
 }
