@@ -104,8 +104,10 @@ export default {
             }
         },
         slotChange(slotIndex) {
-            this.relicInfo.mainPropTypeId = RelicSlotType.getByIndex(slotIndex).mainPropTypes[0].id;
             this.mainProps = RelicSlotType.getByIndex(slotIndex).mainPropTypes
+            if (!this.mainProps.find(e => e.id === this.relicInfo.mainPropTypeId)) {
+                this.relicInfo.mainPropTypeId = RelicSlotType.getByIndex(slotIndex).mainPropTypes[0].id;
+            }
         }
     }
 }
