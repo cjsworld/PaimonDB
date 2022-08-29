@@ -34,34 +34,15 @@ export default class RelicInfo {
     /**
      * 主属性类型
      */
-    mainPropTypeId: string;
+    mainPropType: PropType;
 
     /**
      * 副词条属性
      */
-    subPropType1: string | undefined;
-    subPropValue1: number | undefined;
-
-    subPropType2: string | undefined;
-    subPropValue2: number | undefined;
-
-    subPropType3: string | undefined;
-    subPropValue3: number | undefined;
-
-    subPropType4: string | undefined;
-    subPropValue4: number | undefined;
-
-
-    /**
-     * 主属性类型
-     */
-    get mainPropType(): PropType {
-        return PropType.getById(this.mainPropTypeId);
-    }
-
-    set mainPropType(value: PropType) {
-        this.mainPropTypeId = value.id;
-    }
+    subProp1 = new Prop(PropType.Unknown, 0);
+    subProp2 = new Prop(PropType.Unknown, 0);
+    subProp3 = new Prop(PropType.Unknown, 0);
+    subProp4 = new Prop(PropType.Unknown, 0);
 
 
     /**
@@ -104,7 +85,7 @@ export default class RelicInfo {
         this.setId = setId;
         this.slotIndex = slotIndex;
         this.rank = rank;
-        this.mainPropTypeId = RelicSlotType.getByIndex(this.slotIndex).mainPropTypes[0].id;
+        this.mainPropType = RelicSlotType.getByIndex(this.slotIndex).mainPropTypes[0];
         this.level = 20;
         this.subProp = new PropPanel();
     }
