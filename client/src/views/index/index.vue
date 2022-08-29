@@ -303,7 +303,7 @@ export default {
 .relic-card {
     display: inline-block;
     margin-left: 10px;
-    width: 310px;
+    width: 315px;
 }
 
 .elem-fire {

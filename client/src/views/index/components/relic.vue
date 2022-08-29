@@ -36,7 +36,8 @@
                 </el-option>
             </el-select>
             <el-input v-model="relicInfo.getMainProp().displayValue" readonly
-                      style="width: 65px;margin-left: 5px;text-align: center"></el-input>
+                      style="width: 60px;margin-left: 5px;text-align: center"></el-input>
+            <span style="margin-left: 2px" v-if="relicInfo.mainPropType.isPercent">%</span>
         </el-form-item>
         <el-form-item :label="index === 1 ? `副属性` : ''" v-for="index in 4" :key="index">
             <el-select v-model="relicInfo[`subProp${index}`].typeId" filterable style="width: 130px">
@@ -46,9 +47,10 @@
             </el-select>
             <el-input-number v-model="relicInfo[`subProp${index}`].displayValue"
                              :controls="false"
-                             style="width: 65px;margin-left: 5px"></el-input-number>
+                             style="width: 60px;margin-left: 5px"></el-input-number>
+            <span style="margin-left: 2px" v-if="relicInfo[`subProp${index}`].type.isPercent">%</span>
         </el-form-item>
-        <el-image :src="relicInfo.icon" style="position: absolute;right: 10px;top: 60px;"></el-image>
+        <el-image :src="relicInfo.icon" style="position: absolute;right: 15px;top: 60px;"></el-image>
     </el-form>
 </template>
 
