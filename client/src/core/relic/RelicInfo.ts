@@ -46,23 +46,17 @@ export default class RelicInfo {
 
 
     /**
-     * 副词条属性
-     */
-    subProp: PropPanel;
-
-
-    /**
      * 圣遗物槽位配置数据
      */
-    get set(): RelicSetData {
+    get setData(): RelicSetData {
         return CoreEngine.relic.sets.get(this.setId)!!;
     }
 
     /**
      * 圣遗物槽位配置数据
      */
-    get slot(): RelicSlotData {
-        return this.set.slots[this.slotIndex]!!;
+    get slotData(): RelicSlotData {
+        return this.setData.slots[this.slotIndex]!!;
     }
 
 
@@ -77,7 +71,7 @@ export default class RelicInfo {
      * 图标
      */
     get icon(): string {
-        return this.slot.icon;
+        return this.slotData.icon;
     }
 
 
@@ -87,7 +81,6 @@ export default class RelicInfo {
         this.rank = rank;
         this.mainPropType = RelicSlotType.getByIndex(this.slotIndex).mainPropTypes[0];
         this.level = 20;
-        this.subProp = new PropPanel();
     }
 
     /**
@@ -98,13 +91,22 @@ export default class RelicInfo {
     }
 
     /**
-     * 增加一个副词条，实际数值会根据配置猜测原始精确值
+     * 根据副属性词条数值，推测准确值
      */
-    addSubProp(type: PropType, value: number) {
-        this.subProp.addProp(this.rankData.getSubProp(type, value))
+    getSubProps(): PropPanel {
+        let panel = new PropPanel();
+        if (this.subProp1.type != PropType.Unknown) {
+            panel.addProp(this.rankData.getSubProp(this.subProp1.type, this.subProp1.value));
+        }
+        if (this.subProp2.type != PropType.Unknown) {
+            panel.addProp(this.rankData.getSubProp(this.subProp2.type, this.subProp2.value));
+        }
+        if (this.subProp3.type != PropType.Unknown) {
+            panel.addProp(this.rankData.getSubProp(this.subProp3.type, this.subProp3.value));
+        }
+        if (this.subProp4.type != PropType.Unknown) {
+            panel.addProp(this.rankData.getSubProp(this.subProp4.type, this.subProp4.value));
+        }
+        return panel;
     }
-
-    // addSubProp(prop: Prop) {
-
-    // }
 }

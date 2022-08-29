@@ -18,7 +18,7 @@ export default class RelicPanel {
      * 装备圣遗物
      */
     putRelic(relic: RelicInfo) {
-        this.relics.set(relic.slot.type, relic);
+        this.relics.set(relic.slotData.type, relic);
     }
 
     /**
@@ -28,7 +28,7 @@ export default class RelicPanel {
         let panel = new PropPanel();
         for (let relic of this.relics.values()) {
             panel.addProp(relic.getMainProp());
-            panel.addPanel(relic.subProp);
+            panel.addPanel(relic.getSubProps());
         }
         return panel;
     }
@@ -40,7 +40,7 @@ export default class RelicPanel {
         let list = new Array<AffixData>();
         let dict = new Map<RelicSetData, number>();
         for (let relic of this.relics.values()) {
-            let set = relic.slot.set;
+            let set = relic.setData;
             let c = dict.get(set) ?? 0;
             dict.set(set, ++c);
             for (let i = 0; i < set.setNeedNum.length; i++) {

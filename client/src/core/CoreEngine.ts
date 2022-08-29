@@ -81,45 +81,45 @@ class CoreEngine {
         let relic;
         //花
         relic = relicSet.newInfo(RelicSlotType.Flower, 5);
-        relic.addSubProp(PropType.DEF, 19);
-        relic.addSubProp(PropType.PercentATK, 0.152);
-        relic.addSubProp(PropType.ATK, 37);
-        relic.addSubProp(PropType.CritHurt, 0.202);
+        relic.subProp1 = PropType.DEF.by(19);
+        relic.subProp2 = PropType.PercentATK.by(0.152);
+        relic.subProp3 = PropType.ATK.by(37);
+        relic.subProp4 = PropType.CritHurt.by(0.202);
         info.relic.putRelic(relic);
 
         //羽毛
         relic = relicSet.newInfo(RelicSlotType.Leather, 5);
-        relic.addSubProp(PropType.PercentATK, 0.105);
-        relic.addSubProp(PropType.CritHurt, 0.326);
-        relic.addSubProp(PropType.CritRate, 0.039);
-        relic.addSubProp(PropType.HP, 269);
+        relic.subProp1 = PropType.PercentATK.by(0.105);
+        relic.subProp2 = PropType.CritHurt.by(0.326);
+        relic.subProp3 = PropType.CritRate.by(0.039);
+        relic.subProp4 = PropType.HP.by(269);
         info.relic.putRelic(relic);
 
         //沙漏
         relic = relicSet.newInfo(RelicSlotType.Sand, 5);
         relic.mainPropType = PropType.PercentATK;
-        relic.addSubProp(PropType.CritRate, 0.097);
-        relic.addSubProp(PropType.ChargeRate, 0.091);
-        relic.addSubProp(PropType.ATK, 35);
-        relic.addSubProp(PropType.CritHurt, 0.148);
+        relic.subProp1 = PropType.CritRate.by(0.097);
+        relic.subProp2 = PropType.ChargeRate.by(0.091);
+        relic.subProp3 = PropType.ATK.by(35);
+        relic.subProp4 = PropType.CritHurt.by(0.148);
         info.relic.putRelic(relic);
 
         //杯子
         relic = relicSet.newInfo(RelicSlotType.Cup, 5);
         relic.mainPropType = PropType.IceAddHurt;
-        relic.addSubProp(PropType.PercentDEF, 0.117);
-        relic.addSubProp(PropType.CritRate, 0.031);
-        relic.addSubProp(PropType.PercentHP, 0.122);
-        relic.addSubProp(PropType.CritHurt, 0.187);
+        relic.subProp1 = PropType.PercentDEF.by(0.117);
+        relic.subProp2 = PropType.CritRate.by(0.031);
+        relic.subProp3 = PropType.PercentHP.by(0.122);
+        relic.subProp4 = PropType.CritHurt.by(0.187);
         info.relic.putRelic(relic);
 
         //头
         relic = relicSet.newInfo(RelicSlotType.Cap, 5);
         relic.mainPropType = PropType.CritHurt;
-        relic.addSubProp(PropType.DEF, 37);
-        relic.addSubProp(PropType.HP, 538);
-        relic.addSubProp(PropType.ATK, 33);
-        relic.addSubProp(PropType.CritRate, 0.066);
+        relic.subProp1 = PropType.DEF.by(37);
+        relic.subProp2 = PropType.HP.by(538);
+        relic.subProp3 = PropType.ATK.by(33);
+        relic.subProp4 = PropType.CritRate.by(0.066);
         info.relic.putRelic(relic);
 
         let panel = info.getTotalPanel();
