@@ -87,7 +87,9 @@
             </el-form-item>
         </el-form>
         <el-divider content-position="left">圣遗物配置</el-divider>
-        <relic></relic>
+        <el-card class="relic-card" v-for="index in 1" :key="index">
+            <relic></relic>
+        </el-card>
         <el-divider content-position="left">伤害计算结果</el-divider>
         <el-button type="primary" @click="calcDamage">计算伤害</el-button>
         <div>
@@ -289,6 +291,11 @@ export default {
     vertical-align: middle
 }
 
+.relic-card {
+    display: inline-block;
+    margin-left: 10px;
+    width: 310px;
+}
 
 .elem-fire {
     color: rgb(220, 20, 60);
