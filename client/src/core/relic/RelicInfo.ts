@@ -4,46 +4,75 @@ import Prop from "@/core/foundation/Prop";
 import CoreEngine from "../CoreEngine";
 import RelicRankData from "./RelicRankData";
 import RelicSlotData from "./RelicSlotData";
+import RelicSlotType from "@/core/relic/RelicSlotType";
 
 /**
  * 圣遗物信息
  */
 export default class RelicInfo {
     /**
-     * 圣遗物槽位配置数据
+     * 套装id
      */
-    slot: RelicSlotData;
+    setId: number;
 
     /**
-     * 星级配置数据
+     * 槽位
      */
-    rankData: RelicRankData;
+    slotIndex: number;
 
     /**
-     * 主属性类型
+     * 星级
      */
-    mainPropType: PropType;
+    rank: number;
 
     /**
      * 强化等级
      */
     level: number;
 
+
+    /**
+     * 主属性类型
+     */
+    mainPropType: PropType;
+
+
     /**
      * 副词条属性
      */
     subProp: PropPanel;
 
-    constructor(slot: RelicSlotData, rank: number) {
-        this.slot = slot;
-        this.rankData = CoreEngine.relic.ranks.get(rank)!;
-        this.mainPropType = slot.type.mainPropTypes[0];
-        this.level = 20;
-        this.subProp = new PropPanel();
+
+    /**
+     * 圣遗物槽位配置数据
+     */
+    get slot(): RelicSlotData {
+        return CoreEngine.relic.sets.get(this.setId)!!.slots[this.slotIndex]!!;
     }
 
-    getRank(): number {
-        return this.rankData.rank;
+
+    /**
+     * 星级配置数据
+     */
+    get rankData(): RelicRankData {
+        return CoreEngine.relic.ranks.get(this.rank)!!;
+    }
+
+    /**
+     * 图标
+     */
+    get icon(): string {
+        return this.slot.icon;
+    }
+
+
+    constructor(setId: number, slotIndex: number, rank: number) {
+        this.setId = setId;
+        this.slotIndex = slotIndex;
+        this.rank = rank;
+        this.mainPropType = RelicSlotType.getByIndex(this.slotIndex).mainPropTypes[0];
+        this.level = 20;
+        this.subProp = new PropPanel();
     }
 
     /**

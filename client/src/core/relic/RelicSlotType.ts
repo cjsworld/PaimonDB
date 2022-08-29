@@ -13,7 +13,7 @@ export default class RelicSlotType {
     static Cap = new RelicSlotType("Cap", "理之冠", 4, 3000);
 
     static getByIndex(index: number): RelicSlotType {
-        var t = RelicSlotType.All.find(e => e.index == index);
+        let t = RelicSlotType.All.find(e => e.index == index);
         if (t == null) {
             throw new Error(`Unknown relic index: ${index}`);
         }

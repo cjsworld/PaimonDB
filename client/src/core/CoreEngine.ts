@@ -14,6 +14,7 @@ import axios from 'axios'
 
 class CoreEngine {
     private inited = false;
+    dataVersion = "3.0_R9624836_S9598838_D9617080";
     upgrade = new UpgradeModule();
     affix = new AffixModule();
     skill = new SkillModule();
@@ -27,7 +28,8 @@ class CoreEngine {
         }
         console.log("CoreEngine init start");
         let startTime = new Date();
-        this.textMap = await this.readJsonResource("TextMapCHS");
+        //this.textMap = await this.readJsonResource("TextMapCHS");
+        this.textMap = await this.readJsonResource("TextMapCHSMini");
         await this.upgrade.init();
         await this.affix.init();
         await this.skill.init();
@@ -35,6 +37,8 @@ class CoreEngine {
         await this.avatar.init();
         await this.relic.init();
         this.textMap = undefined;
+        //console.log(JSON.stringify(this.textMapMini));
+        //this.textMapMini = undefined;
         this.inited = true;
         let diff = new Date().valueOf() - startTime.valueOf();
         console.log(`CoreEngine init finish in ${diff} ms`);
@@ -42,7 +46,7 @@ class CoreEngine {
     }
 
     async readJsonResource(filename: string): Promise<any> {
-        let url = `config/${filename}.json`;
+        let url = `config/${this.dataVersion}/${filename}.json`;
         let resp = await axios.get(url);
         if (resp.status != 200) {
             throw new Error(`Read json resource ${url} failed: ${resp.status}`);
@@ -51,6 +55,7 @@ class CoreEngine {
     }
 
     textMap: any
+    //textMapMini = {};
 
     getText(hash: number): string {
         if (!this.textMap || !hash) {
@@ -60,6 +65,7 @@ class CoreEngine {
             if (!s) {
                 return "";
             } else {
+                //this.textMapMini[hash.toString()] = s;
                 return s;
             }
         }

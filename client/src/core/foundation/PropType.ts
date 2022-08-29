@@ -61,9 +61,17 @@ export default class PropType {
     isPercent: boolean;
     configName: string | null;
 
+    static getById(id: string): PropType {
+        let t = PropType.All.find(e => e.id == id);
+        if (t == null) {
+            console.log(`Unknown prop type id: ${id}`);
+            return PropType.Unknown;
+        }
+        return t;
+    }
 
     static getByConfigName(configName: string): PropType {
-        var t = PropType.All.find(e => e.configName == configName);
+        let t = PropType.All.find(e => e.configName == configName);
         if (t == null) {
             console.log(`Unknown prop type: ${configName}`);
             return PropType.Unknown;

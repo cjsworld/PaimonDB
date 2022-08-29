@@ -58,9 +58,13 @@ export default class RelicModule implements CoreEngineModule {
         }
 
         config = await CoreEngine.readJsonResource("ReliquarySetExcelConfigData");
+        let skipId = [10010, 10011, 10013, 15004, 15012];
         for (let item of config) {
             if (!item.EquipAffixId) {
                 continue;
+            }
+            if (skipId.indexOf(item.setId) >= 0) {
+                continue; //过滤掉一些可能没实装的套装，以及低于4星的套装
             }
             let set = new RelicSetData(item, dict);
             this.sets.set(set.id, set);
@@ -68,7 +72,10 @@ export default class RelicModule implements CoreEngineModule {
 
         config = await CoreEngine.readJsonResource("ReliquaryCodexExcelConfigData");
         for (let item of config) {
-            this.sets.get(item.suitId)!.allRanks.push(item.level);
+            let set = this.sets.get(item.suitId);
+            if (set) {
+                set.allRanks.push(item.level);
+            }
         }
     }
 
