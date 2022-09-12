@@ -53,14 +53,14 @@ const routes = [
             {path: '/index', component: () => import('@/views/index/index'), name: '首页', meta: {key: PM.IndexView}}
         ]
     },
-    // {
-    //     path: '/artifact',
-    //     component: layout,
-    //     meta: {icon: 'el-icon-s-home'},
-    //     children: [
-    //         {path: '/artifact', component: () => import('@/views/index/artifact'), name: '圣遗物录入', meta: {key: PM.IndexView}}
-    //     ]
-    // },
+    {
+        path: '/artifact',
+        component: layout,
+        meta: {icon: 'el-icon-s-home'},
+        children: [
+            {path: '/artifact', component: () => import('@/views/index/artifact'), name: '圣遗物录入', meta: {key: PM.IndexView}}
+        ]
+    },
     {
         path: '/system',
         component: layout,

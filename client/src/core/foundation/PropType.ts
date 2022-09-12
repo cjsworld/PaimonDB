@@ -83,7 +83,7 @@ export default class PropType {
     }
 
     private constructor(id: string, name: string, isPercent: boolean, configName: string | null) {
-        Map[id] = this;
+        PropType.Map[id] = this;
         this.id = id;
         this.name = name;
         this.isPercent = isPercent;

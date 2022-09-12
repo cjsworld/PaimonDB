@@ -55,6 +55,8 @@ export default class RelicInfo {
     subProp3 = PropType.Unknown.by(0);
     subProp4 = PropType.Unknown.by(0);
 
+    equippedAvatar: number | undefined
+
 
     /**
      * 圣遗物槽位配置数据

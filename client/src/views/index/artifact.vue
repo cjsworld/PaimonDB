@@ -28,7 +28,13 @@
                 <el-button><i class="el-icon-plus el-icon--left"></i>录入新圣遗物</el-button>
                 <el-button><i class="el-icon-plus el-icon--left"></i>图像识别录入圣遗物</el-button>
                 <el-button><i class="el-icon-close el-icon--left"></i>批量删除模式(多选)</el-button>
-                <el-button><i class="el-icon-download el-icon--left"></i>导出</el-button>
+                <el-upload
+                    action=""
+                    :limit="1"
+                    :show-file-list="false"
+                    :http-request="handleUploadRelic">
+                    <el-button size="small" type="primary">点击上传</el-button>
+                </el-upload>
             </el-form-item>
         </el-form>
         <el-row :gutter="12">
@@ -134,9 +140,12 @@
 
 <script>
 
+import RelicImporter from "@/core/relic/RelicImporter";
+
 export default {
     data() {
         return {
+            uploadFiles: [],
             artifactInfo: {},
             artifactOptions: [],
             checked: false,
@@ -148,6 +157,14 @@ export default {
     methods: {
         onArtifactChange() {
 
+        },
+        async handleUploadRelic(uploader) {
+            let json = JSON.parse(await uploader.file.text());
+            let importer = new RelicImporter(json);
+            let list = importer.readAllRelic();
+            console.log(list);
+            console.log(JSON.stringify(list[0]))
+            uploader.clearFiles();
         }
     }
 }
