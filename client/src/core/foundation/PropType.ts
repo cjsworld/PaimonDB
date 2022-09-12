@@ -4,7 +4,10 @@ import Prop from './Prop';
  * 属性类型
  */
 export default class PropType {
-    static All: PropType[] = [];
+    static Map = {};
+    static get All(): PropType[] {
+        return Object.values(PropType.Map);
+    }
 
     static BaseHP = new PropType("BaseHP", "基础生命值", false, "FIGHT_PROP_BASE_HP");
     static PercentHP = new PropType("PercentHP", "生命值%", true, "FIGHT_PROP_HP_PERCENT");
@@ -62,7 +65,7 @@ export default class PropType {
     configName: string | null;
 
     static getById(id: string): PropType {
-        let t = PropType.All.find(e => e.id == id);
+        let t = PropType.Map[id];
         if (t == null) {
             console.log(`Unknown prop type id: ${id}`);
             return PropType.Unknown;
@@ -80,7 +83,7 @@ export default class PropType {
     }
 
     private constructor(id: string, name: string, isPercent: boolean, configName: string | null) {
-        PropType.All.push(this);
+        Map[id] = this;
         this.id = id;
         this.name = name;
         this.isPercent = isPercent;
