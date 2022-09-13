@@ -6,6 +6,6 @@ import com.xserver.auth.annotation.CheckPermission
 import com.xserver.core.rpc.BaseController
 
 @CheckPermission
-open class ABaseController : BaseController() {
+open class BaseAuthController : BaseController() {
     val user: User get() = AuthUser.current as User
 }

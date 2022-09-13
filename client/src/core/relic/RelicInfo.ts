@@ -56,6 +56,7 @@ export default class RelicInfo {
     subProp4 = PropType.Unknown.by(0);
 
     equippedAvatar: number | undefined
+    id: number | undefined
 
 
     /**
