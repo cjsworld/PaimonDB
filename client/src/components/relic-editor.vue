@@ -60,7 +60,7 @@ import RelicSlotType from "@/core/relic/RelicSlotType";
 import RelicInfo from "@/core/relic/RelicInfo";
 
 export default {
-    name: "Relic",
+    name: "RelicEditor",
     data() {
         return {
             relicData: undefined,

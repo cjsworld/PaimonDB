@@ -88,7 +88,7 @@
         </el-form>
         <el-divider content-position="left">圣遗物配置</el-divider>
         <el-card class="relic-card" v-for="(r,index) in relicList" :key="index">
-            <relic :ref="`relic-${index}`" :slot-index="index" :relic-info="r"></relic>
+            <relic-editor :ref="`relic-${index}`" :slot-index="index" :relic-info="r"></relic-editor>
         </el-card>
         <el-divider content-position="left">伤害计算结果</el-divider>
         <el-button type="primary" @click="calcDamage">计算伤害</el-button>
@@ -109,10 +109,10 @@ import PropType from '@/core/foundation/PropType';
 import RelicSlotType from '@/core/relic/RelicSlotType';
 import MonsterInfo from '@/core/monster/MonsterInfo';
 import CalcContext from '@/core/foundation/CalcContext';
-import relic from "@/views/index/components/relic";
+import RelicEditor from "@/components/relic-editor";
 
 export default {
-    components: {relic},
+    components: {RelicEditor},
     data() {
         return {
             avatarOptions: [],
@@ -180,14 +180,14 @@ export default {
             //花
             relic = relicSet.newInfo(RelicSlotType.Flower, 5);
             relic.setSubProp(1, PropType.DEF, 19);
-            relic.setSubProp(2, PropType.PercentATK, 0.152);
+            relic.setSubProp(2, PropType.ATKPercent, 0.152);
             relic.setSubProp(3, PropType.ATK, 37);
             relic.setSubProp(4, PropType.CritHurt, 0.202);
             list.push(relic);
 
             //羽毛
             relic = relicSet.newInfo(RelicSlotType.Leather, 5);
-            relic.setSubProp(1, PropType.PercentATK, 0.105);
+            relic.setSubProp(1, PropType.ATKPercent, 0.105);
             relic.setSubProp(2, PropType.CritHurt, 0.326);
             relic.setSubProp(3, PropType.CritRate, 0.039);
             relic.setSubProp(4, PropType.HP, 269);
@@ -195,7 +195,7 @@ export default {
 
             //沙漏
             relic = relicSet.newInfo(RelicSlotType.Sand, 5);
-            relic.mainPropType = PropType.PercentATK;
+            relic.mainPropType = PropType.ATKPercent;
             relic.setSubProp(1, PropType.CritRate, 0.097);
             relic.setSubProp(2, PropType.ChargeRate, 0.091);
             relic.setSubProp(3, PropType.ATK, 35);
@@ -205,9 +205,9 @@ export default {
             //杯子
             relic = relicSet.newInfo(RelicSlotType.Cup, 5);
             relic.mainPropType = PropType.IceAddHurt;
-            relic.setSubProp(1, PropType.PercentDEF, 0.117);
+            relic.setSubProp(1, PropType.DEFPercent, 0.117);
             relic.setSubProp(2, PropType.CritRate, 0.031);
-            relic.setSubProp(3, PropType.PercentHP, 0.122);
+            relic.setSubProp(3, PropType.HPPercent, 0.122);
             relic.setSubProp(4, PropType.CritHurt, 0.187);
             list.push(relic);
 

@@ -60,80 +60,6 @@
 
                 </el-card>
             </el-col>
-            <el-col :span="5">
-                <el-card class="artifact-card">
-                    <div slot="header" class="clearfix">
-                        <el-avatar src="https://genshin.mingyulab.com/static/media/xinyan.94fd5d7c.png" style="vertical-align: middle"></el-avatar>
-                        <label style="vertical-align: middle;margin-left: 10px;">雷鸟的怜悯</label>
-                        <el-button icon="el-icon-refresh" circle style="float: right;"></el-button>
-                    </div>
-                    <el-form>
-                        <el-form-item>
-                            <label>生之花</label>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-card shadow="hover">
-                                <el-select style="width: 160px;">
-                                    <el-option>生命值</el-option>
-                                </el-select>
-                                <el-divider direction="vertical"></el-divider>
-                                <span>4567</span>
-                            </el-card>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-rate
-                                v-model="r"
-                                disabled
-                                show-score
-                                text-color="#ff9900"
-                                score-template="{value}">
-                            </el-rate>
-                        </el-form-item>
-                        <el-card shadow="hover">
-                            <el-form-item>
-                                <el-select style="width: 160px;">
-                                    <el-option>生命值</el-option>
-                                </el-select>
-                                <el-divider direction="vertical"></el-divider>
-                                <el-input-number :min="0" :max="100" controls-position="right" style="width: 100px"></el-input-number>
-                            </el-form-item>
-                            <el-form-item>
-                                <el-select style="width: 160px;">
-                                    <el-option>生命值</el-option>
-                                </el-select>
-                                <el-divider direction="vertical"></el-divider>
-                                <el-input-number :min="0" :max="100" controls-position="right" style="width: 100px" :controls="false"></el-input-number>
-                            </el-form-item>
-                            <el-form-item>
-                                <el-select style="width: 160px;">
-                                    <el-option>生命值</el-option>
-                                </el-select>
-                                <el-divider direction="vertical"></el-divider>
-                                <el-input-number :min="0" :max="100" controls-position="right" style="width: 100px"></el-input-number>
-                            </el-form-item>
-                            <el-form-item>
-                                <el-select style="width: 160px;">
-                                    <el-option>生命值</el-option>
-                                </el-select>
-                                <el-divider direction="vertical"></el-divider>
-                                <el-input-number :min="0" :max="100" controls-position="right" style="width: 100px"></el-input-number>
-                            </el-form-item>
-                            <el-form-item label="标记：">
-                                <el-radio-group>
-                                    <el-radio>无</el-radio>
-                                    <el-radio>★</el-radio>
-                                    <el-radio>●</el-radio>
-                                    <el-radio>■</el-radio>
-                                </el-radio-group>
-                            </el-form-item>
-                            <el-form-item>
-                                <el-button><i class="el-icon-check el-icon--left"></i>删除</el-button>
-                                <el-button><i class="el-icon-close el-icon--left"></i>保存</el-button>
-                            </el-form-item>
-                        </el-card>
-                    </el-form>
-                </el-card>
-            </el-col>
         </el-row>
     </div>
 </template>
@@ -141,6 +67,7 @@
 <script>
 
 import RelicImporter from "@/core/relic/RelicImporter";
+import {Message} from "element-ui";
 
 export default {
     data() {
@@ -153,6 +80,7 @@ export default {
         }
     },
     created() {
+
     },
     methods: {
         onArtifactChange() {
@@ -160,11 +88,16 @@ export default {
         },
         async handleUploadRelic(uploader) {
             let json = JSON.parse(await uploader.file.text());
+            uploader.clearFiles();
             let importer = new RelicImporter(json);
             let list = importer.readAllRelic();
-            console.log(list);
-            console.log(JSON.stringify(list[0]))
-            uploader.clearFiles();
+            list = list.map((it) => it.toServer())
+            let res = await this.$api("relic/upload", {list: list});
+            if (res instanceof Error) return;
+            Message({
+                type: 'success',
+                message: `导入成功，新增圣遗物：${res}`
+            });
         }
     }
 }

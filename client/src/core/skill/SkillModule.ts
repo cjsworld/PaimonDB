@@ -11,7 +11,7 @@ export default class SkillModule implements CoreEngineModule {
     public talents: Map<number, TalentData> = new Map();
     public skillDepots: Map<number, SkillDepotData> = new Map();
 
-    async init(): Promise<void> {
+    async init() {
         let config = await CoreEngine.readJsonResource("ProudSkillExcelConfigData");
         for (let item of config) {
             let id = item.proudSkillGroupId;
@@ -40,6 +40,10 @@ export default class SkillModule implements CoreEngineModule {
             let skill = new SkillDepotData(item);
             this.skillDepots.set(skill.id, skill);
         }
+    }
+
+    async onUserChange(uid: number) {
+
     }
     
     getSkillLevelOptions(): any[] {

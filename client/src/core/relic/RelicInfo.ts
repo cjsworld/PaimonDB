@@ -55,8 +55,9 @@ export default class RelicInfo {
     subProp3 = PropType.Unknown.by(0);
     subProp4 = PropType.Unknown.by(0);
 
-    equippedAvatar: number | undefined
-    id: number | undefined
+    equippedAvatar?: number
+    id?: number
+    modifyTime?: number
 
 
     /**
@@ -97,6 +98,45 @@ export default class RelicInfo {
         this.level = 20;
     }
 
+    static fromServer(json: any): RelicInfo {
+        let relic = new RelicInfo(json.setId, json.slotIndex, json.rank);
+        relic.level = json.level;
+        relic.mainPropTypeId = json.mainPropTypeId;
+        relic.subProp1.typeId = json.subProp1TypeId;
+        relic.subProp1.value = json.subProp1Value;
+        relic.subProp2.typeId = json.subProp2TypeId;
+        relic.subProp2.value = json.subProp2Value;
+        relic.subProp3.typeId = json.subProp3TypeId;
+        relic.subProp3.value = json.subProp3Value;
+        relic.subProp4.typeId = json.subProp4TypeId;
+        relic.subProp4.value = json.subProp4Value;
+        relic.equippedAvatar = json.equippedAvatar;
+        relic.id = json.id;
+        relic.modifyTime = json.modifyTime;
+        return relic;
+    }
+
+    toServer(): any {
+        let json: any = {};
+        json.setId = this.setId;
+        json.rank = this.rank;
+        json.slotIndex = this.slotIndex;
+        json.level = this.level;
+        json.mainPropTypeId = this.mainPropTypeId;
+        json.subProp1TypeId = this.subProp1.typeId;
+        json.subProp1Value = this.subProp1.value;
+        json.subProp2TypeId = this.subProp2.typeId;
+        json.subProp2Value = this.subProp2.value;
+        json.subProp3TypeId = this.subProp3.typeId;
+        json.subProp3Value = this.subProp3.value;
+        json.subProp4TypeId = this.subProp4.typeId;
+        json.subProp4Value = this.subProp4.value;
+        if (this.equippedAvatar) {
+            json.equippedAvatar = this.equippedAvatar;
+        }
+        return json;
+    }
+
     /**
      * 根据等级获取当前主属性数值
      */
@@ -109,16 +149,16 @@ export default class RelicInfo {
      */
     getSubProps(): PropPanel {
         let panel = new PropPanel();
-        if (this.subProp1.type != PropType.Unknown) {
+        if (this.subProp1.type.isValid) {
             panel.addProp(this.rankData.getSubProp(this.subProp1.type, this.subProp1.value));
         }
-        if (this.subProp2.type != PropType.Unknown) {
+        if (this.subProp2.type.isValid) {
             panel.addProp(this.rankData.getSubProp(this.subProp2.type, this.subProp2.value));
         }
-        if (this.subProp3.type != PropType.Unknown) {
+        if (this.subProp3.type.isValid) {
             panel.addProp(this.rankData.getSubProp(this.subProp3.type, this.subProp3.value));
         }
-        if (this.subProp4.type != PropType.Unknown) {
+        if (this.subProp4.type.isValid) {
             panel.addProp(this.rankData.getSubProp(this.subProp4.type, this.subProp4.value));
         }
         return panel;

@@ -18,6 +18,8 @@
 </template>
 
 <script>
+import CoreEngine from "@/core/CoreEngine";
+
 export default {
     name: "Login",
     data() {
@@ -43,10 +45,11 @@ export default {
             let query = this.$route.query;
             this.$refs.loginForm.validate(async valid => {
                 if (valid) {
-                    let res = await this.$api("User/Login", this.loginForm)
-                    if (res instanceof Error) return
-                    await this.$store.dispatch('user/setUser', res.user)
-                    await this.$store.dispatch('user/setPermissions', res.permissions)
+                    let res = await this.$api("user/login", this.loginForm);
+                    if (res instanceof Error) return;
+                    await this.$store.dispatch('user/setUser', res.user);
+                    await this.$store.dispatch('user/setPermissions', res.permissions);
+                    await CoreEngine.onUserChange(res.user.id);
                     if (query.target !== undefined && query.target !== '') {
                         this.$router.push(query.target);
                     } else {

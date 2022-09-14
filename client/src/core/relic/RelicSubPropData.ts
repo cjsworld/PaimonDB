@@ -78,14 +78,27 @@ export default class RelicSubPropData {
 
             //console.log(`>>>n=${n},x=${x}`);
             let k = Math.round(x);
-            if (Math.abs(x - k) < 0.25) {
+            if (Math.abs(x - k) < 0.26) {
                 if (k < 0 || k > (this.values.length - 1) * n) {
                     continue;
+                }
+                let result;
+                if (n == 1) {
+                    //词条只强化了1次
+                    result = this.values[k];
+                } else if (k == 0) {
+                    //每次都是最低档
+                    result = this.values[0] * n;
+                } else if (k == (this.values.length - 1) * n) {
+                    //每次都是最高档
+                    result = this.values[k];
+                } else {
+                    result = this.baseValue * n + this.diffAvg * k
                 }
                 return {
                     hitCount: n,
                     totalRank: k,
-                    result: this.baseValue * n + this.diffAvg * k
+                    result: result
                 }
             }
         }

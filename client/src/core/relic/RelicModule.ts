@@ -1,16 +1,18 @@
 import CoreEngine from '@/core/CoreEngine';
 import CoreEngineModule from '@/core/CoreEngineModule';
 import PropType from '@/core/foundation/PropType';
-import RelicRankData from './RelicRankData';
-import RelicSetData from './RelicSetData';
-import RelicSlotType from './RelicSlotType';
+import RelicRankData from '@/core/relic/RelicRankData';
+import RelicSetData from '@/core/relic/RelicSetData';
+import RelicSlotType from '@/core/relic/RelicSlotType';
+import RelicInfo from "@/core/relic/RelicInfo";
 
 export default class RelicModule implements CoreEngineModule {
-    public ranks: Map<number, RelicRankData> = new Map();
-    public sets: Map<number, RelicSetData> = new Map();
+    public ranks = new Map<number, RelicRankData>();
+    public sets = new Map<number, RelicSetData>();
 
+    public list = new Array<RelicInfo>()
 
-    async init(): Promise<void> {
+    async init() {
         let config = await CoreEngine.readJsonResource("ReliquaryMainPropExcelConfigData");
         for (let item of config) {
             let depotId = item.propDepotId ?? 0;
@@ -86,6 +88,32 @@ export default class RelicModule implements CoreEngineModule {
                 set.allRanks.push(item.level);
             }
         }
+    }
+
+    async onUserChange(uid: number) {
+        let key = `user.${uid}.relic.list`;
+        let cache = localStorage.getItem(key);
+        let list;
+        if (cache) {
+            list = JSON.parse(cache);
+        } else {
+            list = [];
+        }
+        this.list = list.map((it) => RelicInfo.fromServer(it));
+        let lastModify = 0;
+        for (let relic of this.list) {
+            if (relic.modifyTime && lastModify < relic.modifyTime) {
+                lastModify = relic.modifyTime;
+            }
+        }
+
+        list = await CoreEngine.reqApi("relic/getList", {lastModify: lastModify});
+        if (!(list instanceof Array)) return;
+        if (list.length == 0) {
+            return;
+        }
+        this.list = list.map((it) => RelicInfo.fromServer(it));
+        localStorage.setItem(key, JSON.stringify(list));
     }
 
     getRelicOptions(): RelicSetData[] {
