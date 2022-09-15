@@ -110,9 +110,10 @@ import RelicSlotType from '@/core/relic/RelicSlotType';
 import MonsterInfo from '@/core/monster/MonsterInfo';
 import CalcContext from '@/core/foundation/CalcContext';
 import RelicEditor from "@/components/relic-editor";
+import RelicView from "@/components/relic-view";
 
 export default {
-    components: {RelicEditor},
+    components: {RelicEditor, RelicView},
     data() {
         return {
             avatarOptions: [],

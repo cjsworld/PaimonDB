@@ -91,29 +91,47 @@ export default class RelicModule implements CoreEngineModule {
     }
 
     async onUserChange(uid: number) {
-        let key = `user.${uid}.relic.list`;
+        let key = `relic`;
+        let change = false;
         let cache = localStorage.getItem(key);
-        let list;
+        let cacheObj;
         if (cache) {
-            list = JSON.parse(cache);
+            cacheObj = JSON.parse(cache);
         } else {
-            list = [];
-        }
-        this.list = list.map((it) => RelicInfo.fromServer(it));
-        let lastModify = 0;
-        for (let relic of this.list) {
-            if (relic.modifyTime && lastModify < relic.modifyTime) {
-                lastModify = relic.modifyTime;
-            }
+            cacheObj = {};
         }
 
-        list = await CoreEngine.reqApi("relic/getList", {lastModify: lastModify});
-        if (!(list instanceof Array)) return;
-        if (list.length == 0) {
-            return;
+        let cacheList;
+        let lastModify;
+        if (cacheObj.uid == uid) {
+            lastModify = cacheObj.lastModify;
+            cacheList = cacheObj.list;
+        } else {
+            lastModify = 0;
+            cacheList = [];
+            change = true;
         }
+        let list = await CoreEngine.reqApi("relic/getList", {lastModify: lastModify});
+        if (list.length > 0) {
+            change = true;
+        } else {
+            list = cacheList;
+        }
+
         this.list = list.map((it) => RelicInfo.fromServer(it));
-        localStorage.setItem(key, JSON.stringify(list));
+        if (change) {
+            for (let relic of this.list) {
+                if (relic.modifyTime && lastModify < relic.modifyTime) {
+                    lastModify = relic.modifyTime;
+                }
+            }
+
+            cacheObj = {};
+            cacheObj.uid = uid;
+            cacheObj.list = list;
+            cacheObj.lastModify = lastModify;
+            localStorage.setItem(key, JSON.stringify(cacheObj));
+        }
     }
 
     getRelicOptions(): RelicSetData[] {

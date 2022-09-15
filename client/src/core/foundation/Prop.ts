@@ -43,6 +43,7 @@ export default class Prop {
     }
 
     toString(): string {
-        return `${this.type}: ${this.value}`;
+        let type = this.type;
+        return `${type}: ${this.displayValue}${type.isPercent ? "%" : ""}`;
     }
 }
