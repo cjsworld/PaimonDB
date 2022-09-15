@@ -91,7 +91,7 @@ export default class RelicSubPropData {
                     result = this.values[0] * n;
                 } else if (k == (this.values.length - 1) * n) {
                     //每次都是最高档
-                    result = this.values[k];
+                    result = this.values[this.values.length - 1] * n;
                 } else {
                     result = this.baseValue * n + this.diffAvg * k
                 }

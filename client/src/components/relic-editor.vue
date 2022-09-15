@@ -8,7 +8,7 @@
                     <div>{{ item.name }}</div>
                 </el-option>
                 <template slot="prefix">
-                    <el-avatar class="avatar-prefix" :src="relicInfo.setData ? relicInfo.setData.icon : ''" alt=""></el-avatar>
+                    <el-avatar class="avatar-prefix" :src="relicInfo.relicSetData ? relicInfo.relicSetData.icon : ''" alt=""></el-avatar>
                 </template>
             </el-select>
         </el-form-item>
@@ -35,7 +35,7 @@
                            :label="item.name">
                 </el-option>
             </el-select>
-            <el-input v-model="relicInfo.getMainProp().displayValue" readonly
+            <el-input v-model="relicInfo.mainProp.displayValue" readonly
                       style="width: 60px;margin-left: 5px;text-align: center"></el-input>
             <span style="margin-left: 2px" v-if="relicInfo.mainPropType.isPercent">%</span>
         </el-form-item>
@@ -83,16 +83,16 @@ export default {
     },
     async created() {
         if (this.slotIndex !== undefined) {
-            this.slots = [RelicSlotType.getByIndex(this.slotIndex)]
+            this.slots = [RelicSlotType.getByIndex(this.slotIndex)];
         } else {
-            this.slots = RelicSlotType.All
+            this.slots = RelicSlotType.All;
         }
-        this.relicOptions = CoreEngine.relic.getRelicOptions()
+        this.relicOptions = CoreEngine.relic.getRelicOptions();
         if (!this.relicInfo.setId && this.relicOptions.length > 0) {
             this.relicInfo.setId = this.relicOptions[0].id;
         }
-        this.rankChange(this.relicInfo.rank)
-        this.slotChange(this.relicInfo.slotIndex)
+        this.rankChange(this.relicInfo.rank);
+        this.slotChange(this.relicInfo.slotIndex);
     },
     methods: {
         onRelicChange() {

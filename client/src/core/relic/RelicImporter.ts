@@ -171,7 +171,8 @@ export default class RelicImporter {
                 if (type.isPercent) {
                     value /= 100;
                 }
-                relic[`subProp${i}`] = relic.rankData.getSubProp(type, value)
+                value = relic.rankData.getSubPropValue(type, value);
+                relic[`subProp${i}`] = type.by(value);
             }
             let avatar = this.avatarMap[it.location];
             if (avatar) {

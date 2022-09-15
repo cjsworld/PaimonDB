@@ -54,11 +54,19 @@ const routes = [
         ]
     },
     {
-        path: '/artifact',
+        path: '/calc',
         component: layout,
-        meta: {icon: 'el-icon-s-home'},
+        meta: {icon: 'el-icon-s-operation'},
         children: [
-            {path: '/artifact', component: () => import('@/views/index/artifact'), name: '圣遗物录入', meta: {key: PM.IndexView}}
+            {path: '/calc', component: () => import('@/views/calc/calc'), name: '计算', meta: {key: PM.IndexView}}
+        ]
+    },
+    {
+        path: '/relic',
+        component: layout,
+        meta: {icon: 'el-icon-s-order'},
+        children: [
+            {path: '/relic/list', component: () => import('@/views/relic/relic-list'), name: '圣遗物管理', meta: {key: PM.IndexView}}
         ]
     },
     {

@@ -54,7 +54,7 @@ export default class WeaponData {
     constructor(data: any) {
         this.id = data.id;
         let icon = data.icon.replace("UI_EquipIcon_", "").toLowerCase();
-        this.icon = `weapon/${icon}.png`;
+        this.icon = `/weapon/${icon}.png`;
         this.name = CoreEngine.getText(data.nameTextMapHash);
         this.weaponType = WeaponType.getByConfigName(data.weaponType);
         this.rank = data.rankLevel;

@@ -112,7 +112,7 @@ export default class RelicModule implements CoreEngineModule {
             change = true;
         }
         let list = await CoreEngine.reqApi("relic/getList", {lastModify: lastModify});
-        if (list.length > 0) {
+        if (list) {
             change = true;
         } else {
             list = cacheList;

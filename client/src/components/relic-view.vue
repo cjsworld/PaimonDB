@@ -5,7 +5,7 @@
         :title="relicInfo.slotData.name"
         trigger="hover">
         <div>{{ relicInfo.slotData.type.name }}</div>
-        <div>{{ relicInfo.getMainProp().toString() }}</div>
+        <div>{{ relicInfo.mainProp.toString() }}</div>
         <div><i class="el-icon-star-on" v-for="o in relicInfo.rank" :key="o"/></div>
         <div>+{{ relicInfo.level }}</div>
         <div v-show="relicInfo.subProp1.type.isValid">{{ relicInfo.subProp1.toString() }}</div>
@@ -47,9 +47,7 @@ export default {
         }
     },
     created() {
-        if (this.relicInfo.equippedAvatar) {
-            this.avatar = CoreEngine.avatar.avatars.get(this.relicInfo.equippedAvatar);
-        }
+        this.avatar = this.relicInfo.equippedAvatarData;
     },
     methods: {
     }

@@ -6,6 +6,7 @@ import RelicRankData from "./RelicRankData";
 import RelicSlotData from "./RelicSlotData";
 import RelicSlotType from "@/core/relic/RelicSlotType";
 import RelicSetData from "@/core/relic/RelicSetData";
+import AvatarData from "@/core/avatar/AvatarData";
 
 /**
  * 圣遗物信息
@@ -48,6 +49,13 @@ export default class RelicInfo {
     }
 
     /**
+     * 根据等级获取当前主属性数值
+     */
+    get mainProp(): Prop {
+        return this.rankData.getMainProp(this.mainPropType, this.level);
+    }
+
+    /**
      * 副词条属性
      */
     subProp1 = PropType.Unknown.by(0);
@@ -63,7 +71,7 @@ export default class RelicInfo {
     /**
      * 圣遗物槽位配置数据
      */
-    get setData(): RelicSetData {
+    get relicSetData(): RelicSetData {
         return CoreEngine.relic.sets.get(this.setId)!!;
     }
 
@@ -71,7 +79,7 @@ export default class RelicInfo {
      * 圣遗物槽位配置数据
      */
     get slotData(): RelicSlotData {
-        return this.setData.slots[this.slotIndex]!!;
+        return this.relicSetData.slots[this.slotIndex]!!;
     }
 
 
@@ -89,6 +97,46 @@ export default class RelicInfo {
         return this.slotData.icon;
     }
 
+    /**
+     * 根据副属性词条数值，推测准确值
+     */
+    getSubProps(): PropPanel {
+        let panel = new PropPanel();
+        if (this.subProp1.type.isValid) {
+            panel.addProp(this.rankData.getSubProp(this.subProp1.type, this.subProp1.value));
+        }
+        if (this.subProp2.type.isValid) {
+            panel.addProp(this.rankData.getSubProp(this.subProp2.type, this.subProp2.value));
+        }
+        if (this.subProp3.type.isValid) {
+            panel.addProp(this.rankData.getSubProp(this.subProp3.type, this.subProp3.value));
+        }
+        if (this.subProp4.type.isValid) {
+            panel.addProp(this.rankData.getSubProp(this.subProp4.type, this.subProp4.value));
+        }
+        return panel;
+    }
+
+    setSubProp(index: number, type: PropType, value: number) {
+        this[`subProp${index}`] = type.by(value);
+    }
+
+    get equippedAvatarData(): AvatarData | undefined {
+        if (this.equippedAvatar) {
+            return CoreEngine.avatar.avatars.get(this.equippedAvatar);
+        } else {
+            return undefined
+        }
+    }
+
+    get equippedAvatarName(): string {
+        let avatar = this.equippedAvatarData;
+        if (avatar) {
+            return avatar.name;
+        } else {
+            return ""
+        }
+    }
 
     constructor(setId: number, slotIndex: number, rank: number) {
         this.setId = setId;
@@ -135,36 +183,5 @@ export default class RelicInfo {
             json.equippedAvatar = this.equippedAvatar;
         }
         return json;
-    }
-
-    /**
-     * 根据等级获取当前主属性数值
-     */
-    getMainProp(): Prop {
-        return this.rankData.getMainProp(this.mainPropType, this.level);
-    }
-
-    /**
-     * 根据副属性词条数值，推测准确值
-     */
-    getSubProps(): PropPanel {
-        let panel = new PropPanel();
-        if (this.subProp1.type.isValid) {
-            panel.addProp(this.rankData.getSubProp(this.subProp1.type, this.subProp1.value));
-        }
-        if (this.subProp2.type.isValid) {
-            panel.addProp(this.rankData.getSubProp(this.subProp2.type, this.subProp2.value));
-        }
-        if (this.subProp3.type.isValid) {
-            panel.addProp(this.rankData.getSubProp(this.subProp3.type, this.subProp3.value));
-        }
-        if (this.subProp4.type.isValid) {
-            panel.addProp(this.rankData.getSubProp(this.subProp4.type, this.subProp4.value));
-        }
-        return panel;
-    }
-
-    setSubProp(index: number, type: PropType, value: number) {
-        this[`subProp${index}`] = type.by(value);
     }
 }

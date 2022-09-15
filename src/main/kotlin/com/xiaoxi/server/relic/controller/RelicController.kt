@@ -12,10 +12,10 @@ class RelicController : BaseAuthController() {
 
     @RPC
     //@IncludedBy(Permissions.IndexView)
-    suspend fun getList(lastModify: Long): List<JsonObject> {
+    suspend fun getList(lastModify: Long): List<JsonObject>? {
         val uid = user.id
         if (lastModify == RelicInfo.getUserRelicMaxModifyTime(uid)) {
-            return emptyList()
+            return null
         }
         return RelicInfo.getUserAllRelic(uid).map { it.toVO() }
     }

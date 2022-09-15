@@ -11,7 +11,7 @@ export default class RelicSlotData {
     //desc: string;
 
     get icon() {
-        return `relic/${this.set.id}_${this.type.index}.png`
+        return `/relic/${this.set.id}_${this.type.index}.png`
     }
 
     constructor(set: RelicSetData, type: RelicSlotType, name: string, desc: string) {
