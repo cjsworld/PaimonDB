@@ -33,20 +33,45 @@
         </el-form>
         <el-table :data="relicList">
             <el-table-column prop="id" label="ID" width="60" sortable></el-table-column>
+            <el-table-column width="60">
+                <template v-slot="scope">
+                    <el-avatar :size="40" shape="square" :src="scope.row.icon"></el-avatar>
+                </template>
+            </el-table-column>
             <el-table-column prop="relicSetData.name" label="套装" width="140" sortable></el-table-column>
-            <el-table-column prop="slotData.type.name" label="套装" width="80" sortable></el-table-column>
+            <el-table-column prop="slotData.type.name" label="位置" width="80" sortable></el-table-column>
             <el-table-column prop="rank" label="星级" width="80" sortable></el-table-column>
             <el-table-column prop="level" label="等级" width="80" sortable></el-table-column>
             <el-table-column prop="mainPropType.name" label="主属性" width="120" sortable></el-table-column>
-            <el-table-column prop="mainProp.displayValue" label="主属性数值" width="120" sortable></el-table-column>
+            <el-table-column prop="mainProp.displayValue" label="数值" width="80" sortable>
+                <template v-slot="scope">
+                    {{scope.row.mainProp.displayValue}}{{scope.row.mainPropType.isPercent ? "%" : ""}}
+                </template>
+            </el-table-column>
             <el-table-column prop="subProp1.type.name" label="副词条1" width="120" sortable></el-table-column>
-            <el-table-column prop="subProp1.displayValue" label="副词条1数值" width="140" sortable></el-table-column>
+            <el-table-column prop="subProp1.displayValue" label="数值" width="80" sortable>
+                <template v-slot="scope">
+                    {{scope.row.subProp1.displayValue}}{{scope.row.subProp1.type.isPercent ? "%" : ""}}
+                </template>
+            </el-table-column>
             <el-table-column prop="subProp2.type.name" label="副词条2" width="120" sortable></el-table-column>
-            <el-table-column prop="subProp2.displayValue" label="副词条2数值" width="140" sortable></el-table-column>
+            <el-table-column prop="subProp2.displayValue" label="数值" width="80" sortable>
+                <template v-slot="scope">
+                    {{scope.row.subProp2.displayValue}}{{scope.row.subProp2.type.isPercent ? "%" : ""}}
+                </template>
+            </el-table-column>
             <el-table-column prop="subProp3.type.name" label="副词条3" width="120" sortable></el-table-column>
-            <el-table-column prop="subProp3.displayValue" label="副词条3数值" width="140" sortable></el-table-column>
+            <el-table-column prop="subProp3.displayValue" label="数值" width="80" sortable>
+                <template v-slot="scope">
+                    {{scope.row.subProp3.displayValue}}{{scope.row.subProp3.type.isPercent ? "%" : ""}}
+                </template>
+            </el-table-column>
             <el-table-column prop="subProp4.type.name" label="副词条4" width="120" sortable></el-table-column>
-            <el-table-column prop="subProp4.displayValue" label="副词条4数值" width="140" sortable></el-table-column>
+            <el-table-column prop="subProp4.displayValue" label="数值" width="80" sortable>
+                <template v-slot="scope">
+                    {{scope.row.subProp4.displayValue}}{{scope.row.subProp4.type.isPercent ? "%" : ""}}
+                </template>
+            </el-table-column>
             <el-table-column prop="equippedAvatarName" label="已装备的角色" width="140" sortable></el-table-column>
         </el-table>
     </div>
