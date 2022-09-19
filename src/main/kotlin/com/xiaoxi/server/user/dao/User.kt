@@ -1,13 +1,25 @@
 package com.xiaoxi.server.user.dao
 
-import com.xiaoxi.server.base.BoolState
 import com.xiaoxi.server.base.DaoTable
-import com.xiaoxi.server.base.VO
 import com.xiaoxi.server.base.ToVO
+import com.xiaoxi.server.base.VO
 import com.xiaoxi.server.user.LoginSession
 import com.xserver.auth.AuthUser
+import com.xserver.core.util.IntEnum
 import com.xserver.mongo.*
 import io.vertx.core.json.JsonObject
+
+enum class UserState(override val value: Int) : IntEnum {
+    //等待验证
+    WaitVerify(0),
+
+    //正常
+    Enable(1),
+
+    //禁用
+    Disable(2)
+}
+
 
 class User(raw: JsonObject = JsonObject()) : MongoDBObject(raw), AuthUser, ToVO {
     companion object : DaoTable {
@@ -58,11 +70,22 @@ class User(raw: JsonObject = JsonObject()) : MongoDBObject(raw), AuthUser, ToVO 
 
     /** 显示名称 */
     @VO
-    var name by StringField
+    var name by StringField.Nullable
+
+    /** 注册IP */
+    var registerIP by StringField.Nullable
+
+    /**上次登录时间 */
+    @VO(voKeys = [LIST_VO])
+    var lastLogin by LongField
+
+    /**登录的IP */
+    @VO(voKeys = [LIST_VO])
+    var loginIP by StringField.Nullable
 
     /** 状态 */
     @VO(voKeys = [LIST_VO])
-    var enable by EnumField(BoolState::class)
+    var state by EnumField(UserState::class)
 
     /** 所属权限分组 */
     @VO(voKeys = [LIST_VO])

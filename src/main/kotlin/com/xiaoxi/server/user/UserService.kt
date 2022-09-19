@@ -2,9 +2,9 @@ package com.xiaoxi.server.user
 
 import com.xiaoxi.server.RootService
 import com.xiaoxi.server.base.BaseService
-import com.xiaoxi.server.base.BoolState
 import com.xiaoxi.server.user.dao.User
 import com.xiaoxi.server.user.dao.UserRole
+import com.xiaoxi.server.user.dao.UserState
 import com.xserver.core.json.jarrayOf
 import com.xserver.core.util.MD5Util
 import com.xserver.core.util.timestamp
@@ -47,7 +47,7 @@ object UserService : BaseService() {
             admin.username = "admin"
             admin.password = MD5Util.hashString("admin")
             admin.name = "admin"
-            admin.enable = BoolState.Yes
+            admin.state = UserState.Enable
             admin.roleId = User.SuperID
             admin.createTime = timestamp()
             admin.insert()

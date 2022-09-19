@@ -28,6 +28,13 @@ const routes = [
         hidden: true
     },
     {
+        path: '/verify-email',
+        meta: {key: ""},
+        component: () => import('@/views/login/verify-email'),
+        name: '邮箱验证',
+        hidden: true
+    },
+    {
         path: '/404',
         component: layout,
         name: '',

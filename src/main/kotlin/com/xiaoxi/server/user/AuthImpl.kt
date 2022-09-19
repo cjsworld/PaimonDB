@@ -1,8 +1,8 @@
 package com.xiaoxi.server.user
 
 import com.xiaoxi.server.RootService
-import com.xiaoxi.server.base.BoolState
 import com.xiaoxi.server.user.dao.User
+import com.xiaoxi.server.user.dao.UserState
 import com.xserver.auth.AuthUser
 import com.xserver.auth.provider.HttpCookieAuthProvider
 
@@ -17,7 +17,7 @@ class AuthImpl : HttpCookieAuthProvider("token", null) {
 
         val user = User.getByID(session.uid) ?: authenticateFailed("Token无效")
 
-        if (user.enable != BoolState.Yes) {
+        if (user.state == UserState.Disable) {
             authenticateFailed("帐号已封停")
         }
         user.session = session
