@@ -101,7 +101,7 @@ export default class PropPanel {
      */
     totalHP(): number {
         let value = this.get(PropType.BaseHP);
-        value *= (1 + this.get(PropType.PercentHP));
+        value *= (1 + this.get(PropType.HPPercent));
         value += this.get(PropType.HP);
         return value;
     }
@@ -111,7 +111,7 @@ export default class PropPanel {
      */
     totalATK(): number {
         let value = this.get(PropType.BaseATK);
-        value *= (1 + this.get(PropType.PercentATK));
+        value *= (1 + this.get(PropType.ATKPercent));
         value += this.get(PropType.ATK);
         return value;
     }
@@ -121,7 +121,7 @@ export default class PropPanel {
      */
     totalDEF(): number {
         let value = this.get(PropType.BaseDEF);
-        value *= (1 + this.get(PropType.PercentDEF));
+        value *= (1 + this.get(PropType.DEFPercent));
         value += this.get(PropType.DEF);
         return value;
     }

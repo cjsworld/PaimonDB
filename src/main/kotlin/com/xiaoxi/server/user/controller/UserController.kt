@@ -3,7 +3,7 @@ package com.xiaoxi.server.user.controller
 import com.xiaoxi.server.RootService
 import com.xiaoxi.server.base.BoolState
 import com.xiaoxi.server.base.WriteLog
-import com.xiaoxi.server.user.ABaseController
+import com.xiaoxi.server.user.BaseAuthController
 import com.xiaoxi.server.user.LoginSession
 import com.xiaoxi.server.user.Permissions
 import com.xiaoxi.server.user.dao.User
@@ -29,7 +29,7 @@ import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import io.vertx.ext.web.RoutingContext
 
-class UserController : ABaseController() {
+class UserController : BaseAuthController() {
 
     @RPC
     @NotAuth

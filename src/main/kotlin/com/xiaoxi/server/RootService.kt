@@ -1,5 +1,6 @@
 package com.xiaoxi.server
 
+import com.xiaoxi.server.relic.RelicService
 import com.xiaoxi.server.rpcLog.RPCLogService
 import com.xiaoxi.server.system.SystemService
 import com.xiaoxi.server.user.AuthImpl
@@ -59,6 +60,8 @@ object RootService : Service, MainServer.Factory {
         MainServer.addSvc(SystemService)
         MainServer.addSvc(UserService)
         MainServer.addSvc(RPCLogService)
+
+        MainServer.addSvc(RelicService)
     }
 
     override suspend fun onOpen() {

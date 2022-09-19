@@ -6,7 +6,7 @@ import WeaponType from './WeaponType';
 export default class WeaponModule implements CoreEngineModule {
     public weapons: Map<number, WeaponData> = new Map();
 
-    async init(): Promise<void> {
+    async init() {
         let config = await CoreEngine.readJsonResource("WeaponExcelConfigData");
         let skipId = [15306, 14306, 13304, 12304];
         for (let item of config) {
@@ -25,6 +25,10 @@ export default class WeaponModule implements CoreEngineModule {
         }
         
         require("./impl/WeaponBowAmos");
+    }
+
+    async onUserChange(uid: number) {
+
     }
     
     getWeaponOptions(type: WeaponType): any[] {

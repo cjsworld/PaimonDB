@@ -60,7 +60,7 @@ export default class AvatarData {
     constructor(data: any) {
         this.id = data.id;
         let icon = data.iconName.replace("UI_AvatarIcon_", "").toLowerCase()
-        this.icon = `avatar/${icon}.png`;
+        this.icon = `/avatar/${icon}.png`;
         this.name = CoreEngine.getText(data.nameTextMapHash);
         this.weaponType = WeaponType.getByConfigName(data.weaponType);
         let quality = data.qualityType;

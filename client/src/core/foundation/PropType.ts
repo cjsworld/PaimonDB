@@ -10,18 +10,18 @@ export default class PropType {
     }
 
     static BaseHP = new PropType("BaseHP", "基础生命值", false, "FIGHT_PROP_BASE_HP");
-    static PercentHP = new PropType("PercentHP", "生命值%", true, "FIGHT_PROP_HP_PERCENT");
+    static HPPercent = new PropType("HPPercent", "生命值%", true, "FIGHT_PROP_HP_PERCENT");
     static HP = new PropType("HP", "生命值", false, "FIGHT_PROP_HP");
 
     static BaseATK = new PropType("BaseATK", "攻击力", false, "FIGHT_PROP_BASE_ATTACK");
-    static PercentATK = new PropType("PercentATK", "攻击力%", true, "FIGHT_PROP_ATTACK_PERCENT");
+    static ATKPercent = new PropType("ATKPercent", "攻击力%", true, "FIGHT_PROP_ATTACK_PERCENT");
     static ATK = new PropType("ATK", "攻击力", false, "FIGHT_PROP_ATTACK");
 
     static BaseDEF = new PropType("BaseDEF", "基础防御力", false, "FIGHT_PROP_BASE_DEFENSE");
-    static PercentDEF = new PropType("PercentDEF", "防御力%", true, "FIGHT_PROP_DEFENSE_PERCENT");
+    static DEFPercent = new PropType("DEFPercent", "防御力%", true, "FIGHT_PROP_DEFENSE_PERCENT");
     static DEF = new PropType("DEF", "防御力", false, "FIGHT_PROP_DEFENSE");
 
-    static PercentSubDEF = new PropType("PercentSubDEF", "减少防御力", true, null);
+    static SubDEF = new PropType("SubDEF", "减少防御力", true, null);
     static IngoreDEF = new PropType("IngoreDEF", "无视防御力", true, null);
 
     static ElemMastery = new PropType("ElemMastery", "元素精通", false, "FIGHT_PROP_ELEMENT_MASTERY");
@@ -92,6 +92,10 @@ export default class PropType {
 
     by(value: number): Prop {
         return new Prop(this, value);
+    }
+
+    get isValid(): boolean {
+        return this.id !== ""
     }
 
     toString(): string {

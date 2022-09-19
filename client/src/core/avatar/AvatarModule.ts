@@ -5,7 +5,7 @@ import AvatarData from './AvatarData';
 export default class AvatarModule implements CoreEngineModule {
     public avatars: Map<number, AvatarData> = new Map();
 
-    async init(): Promise<void> {
+    async init() {
         let config = await CoreEngine.readJsonResource("AvatarExcelConfigData");
         for (let item of config) {
             if (item.useType != "AVATAR_FORMAL") {
@@ -20,6 +20,10 @@ export default class AvatarModule implements CoreEngineModule {
         }
 
         require("./impl/AvatarGanyu");
+    }
+
+    async onUserChange(uid: number) {
+
     }
     
     getAvatarOptions(): AvatarData[] {

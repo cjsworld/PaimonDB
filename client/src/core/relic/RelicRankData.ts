@@ -49,10 +49,20 @@ export default class RelicRankData {
     /**
      * 获取副词条数值（会自动猜测精确值）
      */
-    getSubProp(propType: PropType, value: number) {
-        return propType.by(this.subProps.get(propType)!.getPreciseValue(value));
+    getSubProp(propType: PropType, value: number): Prop {
+        return propType.by(this.getSubPropValue(propType, value));
     }
 
+    /**
+     * 获取副词条数值（会自动猜测精确值）
+     */
+    getSubPropValue(propType: PropType, value: number): number {
+        return this.subProps.get(propType)!.getPreciseValue(value);
+    }
+
+    /**
+     * 获取副词条可能出现的类型
+     */
     getSubPropTypes(): PropType[] {
         let list = new Array<PropType>();
         for (let it of this.subProps.keys()) {

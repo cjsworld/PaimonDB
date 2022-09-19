@@ -28,7 +28,7 @@ export default class Prop {
             value = this.value;
         }
         if (value % 1 != 0) {
-            return value.toFixed(1);
+            return parseFloat(value.toFixed(1));
         } else {
             return value;
         }
@@ -43,6 +43,11 @@ export default class Prop {
     }
 
     toString(): string {
-        return `${this.type}: ${this.value}`;
+        let type = this.type;
+        return `${type}: ${this.displayValue}${type.isPercent ? "%" : ""}`;
+    }
+
+    get displayString(): string {
+        return this.toString()
     }
 }

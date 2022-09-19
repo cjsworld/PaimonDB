@@ -6,23 +6,23 @@ export default class RelicImporter {
 
     private data: any;
     private slotMap = {
-        'flower': RelicSlotType.Flower,
-        'plume': RelicSlotType.Leather,
-        'sands': RelicSlotType.Sand,
-        'goblet': RelicSlotType.Cup,
-        'circlet': RelicSlotType.Cap
+        "flower": RelicSlotType.Flower,
+        "plume": RelicSlotType.Leather,
+        "sands": RelicSlotType.Sand,
+        "goblet": RelicSlotType.Cup,
+        "circlet": RelicSlotType.Cap
     }
     private propMap = {
         "critRate_": PropType.CritRate,
         "critDMG_": PropType.CritHurt,
         "atk": PropType.ATK,
-        "atk_": PropType.PercentATK,
+        "atk_": PropType.ATKPercent,
         "eleMas": PropType.ElemMastery,
         "enerRech_": PropType.ChargeRate,
         "hp": PropType.HP,
-        "hp_": PropType.PercentHP,
+        "hp_": PropType.HPPercent,
         "def": PropType.DEF,
-        "def_": PropType.PercentDEF,
+        "def_": PropType.DEFPercent,
         "physical_dmg_": PropType.PhysicalAddHurt,
         "heal_": PropType.HealAdd,
         "geo_dmg_": PropType.RockAddHurt,
@@ -34,43 +34,43 @@ export default class RelicImporter {
         "dendro_dmg_": PropType.GrassAddHurt
     }
     private setMap = {
-        'ArchaicPetra': 15014, //悠古的磐岩
-        'BlizzardStrayer': 14001, //冰风迷途的勇士
-        'BloodstainedChivalry': 15008, //染血的骑士道
-        'CrimsonWitchOfFlames': 15006, //炽烈的炎之魔女
-        'GladiatorsFinale': 15001, //角斗士的终幕礼
-        'HeartOfDepth': 15016, //沉沦之心
-        'Lavawalker': 14003, //渡过烈火的贤人
-        'MaidenBeloved': 14004, //被怜爱的少女
-        'NoblesseOblige': 15007, //昔日宗室之仪
-        'RetracingBolide': 15015, //逆飞的流星
-        'Thundersoother': 14002, //平息鸣雷的尊者
-        'ThunderingFury': 15005, //如雷的盛怒
-        'ViridescentVenerer': 15002, //翠绿之影
-        'WanderersTroupe': 15003, //流浪大地的乐团
-        'Berserker': 10005, //战狂
-        'BraveHeart': 10002, //勇士之心
-        'DefendersWill': 10003, //守护之心
-        'TheExile': 10009, //流放者
-        'Gambler': 10008, //赌徒
-        'Instructor': 10007, //教官
-        'MartialArtist': 10006, //武人
-        'PrayersForDestiny': 15010, //祭水之人
-        'PrayersForIllumination': 15009, //祭火之人
-        'PrayersForWisdom': 15011, //祭雷之人
-        'PrayersToSpringtime': 15013, //祭冰之人
-        'ResolutionOfSojourner': 10001, //行者之心
-        'Scholar': 10012, //学士
-        'TinyMiracle': 10004, //奇迹
-        'Adventurer': 0, //冒险家
-        'LuckyDog': 0, //幸运儿
-        'TravelingDoctor': 0, //游医
-        'TenacityOfTheMillelith': 15017, //千岩牢固
-        'PaleFlame': 15018,//苍白之火
-        'EmblemOfSeveredFate': 15020, //绝缘之旗印
-        'ShimenawasReminiscence': 15019, //追忆之注连
-        'HuskOfOpulentDreams': 15021, //华馆梦醒形骸记
-        'OceanHuedClam': 15022, //海染砗磲
+        "ArchaicPetra": 15014, //悠古的磐岩
+        "BlizzardStrayer": 14001, //冰风迷途的勇士
+        "BloodstainedChivalry": 15008, //染血的骑士道
+        "CrimsonWitchOfFlames": 15006, //炽烈的炎之魔女
+        "GladiatorsFinale": 15001, //角斗士的终幕礼
+        "HeartOfDepth": 15016, //沉沦之心
+        "Lavawalker": 14003, //渡过烈火的贤人
+        "MaidenBeloved": 14004, //被怜爱的少女
+        "NoblesseOblige": 15007, //昔日宗室之仪
+        "RetracingBolide": 15015, //逆飞的流星
+        "Thundersoother": 14002, //平息鸣雷的尊者
+        "ThunderingFury": 15005, //如雷的盛怒
+        "ViridescentVenerer": 15002, //翠绿之影
+        "WanderersTroupe": 15003, //流浪大地的乐团
+        "Berserker": 10005, //战狂
+        "BraveHeart": 10002, //勇士之心
+        "DefendersWill": 10003, //守护之心
+        "TheExile": 10009, //流放者
+        "Gambler": 10008, //赌徒
+        "Instructor": 10007, //教官
+        "MartialArtist": 10006, //武人
+        "PrayersForDestiny": 15010, //祭水之人
+        "PrayersForIllumination": 15009, //祭火之人
+        "PrayersForWisdom": 15011, //祭雷之人
+        "PrayersToSpringtime": 15013, //祭冰之人
+        "ResolutionOfSojourner": 10001, //行者之心
+        "Scholar": 10012, //学士
+        "TinyMiracle": 10004, //奇迹
+        "Adventurer": -1, //冒险家
+        "LuckyDog": -1, //幸运儿
+        "TravelingDoctor": -1, //游医
+        "TenacityOfTheMillelith": 15017, //千岩牢固
+        "PaleFlame": 15018,//苍白之火
+        "EmblemOfSeveredFate": 15020, //绝缘之旗印
+        "ShimenawasReminiscence": 15019, //追忆之注连
+        "HuskOfOpulentDreams": 15021, //华馆梦醒形骸记
+        "OceanHuedClam": 15022, //海染砗磲
         "EchoesOfAnOffering": 15024, //来歆余响
         "VermillionHereafter": 15023, //辰砂往生录
         "DeepwoodMemories": 15025, //深林的记忆
@@ -150,6 +150,9 @@ export default class RelicImporter {
         let list = new Array<RelicInfo>();
         for (let it of this.data.artifacts) {
             let setId = this.setMap[it.setKey];
+            if (setId === -1) {
+                continue;
+            }
             let slot = this.slotMap[it.slotKey];
             let mainProp = this.propMap[it.mainStatKey];
             if (!setId || !slot || !mainProp) {
@@ -164,9 +167,12 @@ export default class RelicImporter {
                 if (!type) {
                     throw new Error("Invalid format: " + JSON.stringify(it));
                 }
-                let prop = relic[`subProp${i}`];
-                prop.typeId = type.id;
-                prop.value = sub.value;
+                let value = sub.value
+                if (type.isPercent) {
+                    value /= 100;
+                }
+                value = relic.rankData.getSubPropValue(type, value);
+                relic[`subProp${i}`] = type.by(value);
             }
             let avatar = this.avatarMap[it.location];
             if (avatar) {

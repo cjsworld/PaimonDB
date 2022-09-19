@@ -27,7 +27,7 @@ export default class RelicPanel {
     getPanel(): PropPanel {
         let panel = new PropPanel();
         for (let relic of this.relics.values()) {
-            panel.addProp(relic.getMainProp());
+            panel.addProp(relic.mainProp);
             panel.addPanel(relic.getSubProps());
         }
         return panel;
@@ -40,7 +40,7 @@ export default class RelicPanel {
         let list = new Array<AffixData>();
         let dict = new Map<RelicSetData, number>();
         for (let relic of this.relics.values()) {
-            let set = relic.setData;
+            let set = relic.relicSetData;
             let c = dict.get(set) ?? 0;
             dict.set(set, ++c);
             for (let i = 0; i < set.setNeedNum.length; i++) {

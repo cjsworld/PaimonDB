@@ -5,7 +5,7 @@ import AffixSetData from './AffixSetData';
 export default class AffixModule implements CoreEngineModule {
     public affixs: Map<number, AffixSetData> = new Map();
 
-    async init(): Promise<void> {
+    async init() {
         let config = await CoreEngine.readJsonResource("EquipAffixExcelConfigData");
         for (let item of config) {
             let id = item.id!;
@@ -16,5 +16,9 @@ export default class AffixModule implements CoreEngineModule {
             }
             set.addAffix(item);
         }
+    }
+
+    async onUserChange(uid: number) {
+
     }
 }

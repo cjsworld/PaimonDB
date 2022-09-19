@@ -8,11 +8,15 @@ export default class UpgradeModule implements CoreEngineModule {
     public curves: Map<number, CurveData> = new Map();
     public promotes: Map<number, PromoteData> = new Map();
 
-    async init(): Promise<void> {
+    async init() {
         await this.readCurves("Avatar");
         await this.readCurves("Weapon");
         await this.readPromotes("Avatar");
         await this.readPromotes("Weapon");
+    }
+
+    async onUserChange(uid: number) {
+
     }
 
     async readCurves(name: string): Promise<void> {

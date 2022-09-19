@@ -1,16 +1,18 @@
 import CoreEngine from '@/core/CoreEngine';
 import CoreEngineModule from '@/core/CoreEngineModule';
 import PropType from '@/core/foundation/PropType';
-import RelicRankData from './RelicRankData';
-import RelicSetData from './RelicSetData';
-import RelicSlotType from './RelicSlotType';
+import RelicRankData from '@/core/relic/RelicRankData';
+import RelicSetData from '@/core/relic/RelicSetData';
+import RelicSlotType from '@/core/relic/RelicSlotType';
+import RelicInfo from "@/core/relic/RelicInfo";
 
 export default class RelicModule implements CoreEngineModule {
-    public ranks: Map<number, RelicRankData> = new Map();
-    public sets: Map<number, RelicSetData> = new Map();
+    public ranks = new Map<number, RelicRankData>();
+    public sets = new Map<number, RelicSetData>();
 
+    public list = new Array<RelicInfo>()
 
-    async init(): Promise<void> {
+    async init() {
         let config = await CoreEngine.readJsonResource("ReliquaryMainPropExcelConfigData");
         for (let item of config) {
             let depotId = item.propDepotId ?? 0;
@@ -85,6 +87,50 @@ export default class RelicModule implements CoreEngineModule {
             if (set) {
                 set.allRanks.push(item.level);
             }
+        }
+    }
+
+    async onUserChange(uid: number) {
+        let key = `relic`;
+        let change = false;
+        let cache = localStorage.getItem(key);
+        let cacheObj;
+        if (cache) {
+            cacheObj = JSON.parse(cache);
+        } else {
+            cacheObj = {};
+        }
+
+        let cacheList;
+        let lastModify;
+        if (cacheObj.uid == uid) {
+            lastModify = cacheObj.lastModify;
+            cacheList = cacheObj.list;
+        } else {
+            lastModify = 0;
+            cacheList = [];
+            change = true;
+        }
+        let list = await CoreEngine.reqApi("relic/getList", {lastModify: lastModify});
+        if (list) {
+            change = true;
+        } else {
+            list = cacheList;
+        }
+
+        this.list = list.map((it) => RelicInfo.fromServer(it));
+        if (change) {
+            for (let relic of this.list) {
+                if (relic.modifyTime && lastModify < relic.modifyTime) {
+                    lastModify = relic.modifyTime;
+                }
+            }
+
+            cacheObj = {};
+            cacheObj.uid = uid;
+            cacheObj.list = list;
+            cacheObj.lastModify = lastModify;
+            localStorage.setItem(key, JSON.stringify(cacheObj));
         }
     }
 

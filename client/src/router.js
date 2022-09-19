@@ -61,11 +61,19 @@ const routes = [
         ]
     },
     {
-        path: '/artifact',
+        path: '/calc',
         component: layout,
-        meta: {icon: 'el-icon-s-home'},
+        meta: {icon: 'el-icon-s-operation'},
         children: [
-            {path: '/artifact', component: () => import('@/views/index/artifact'), name: '圣遗物录入', meta: {key: PM.IndexView}}
+            {path: '/calc', component: () => import('@/views/calc/calc'), name: '计算', meta: {key: PM.IndexView}}
+        ]
+    },
+    {
+        path: '/relic',
+        component: layout,
+        meta: {icon: 'el-icon-s-order'},
+        children: [
+            {path: '/relic/list', component: () => import('@/views/relic/relic-list'), name: '圣遗物管理', meta: {key: PM.IndexView}}
         ]
     },
     {
@@ -103,18 +111,19 @@ router.beforeEach(async (to, from, next) => {
         let vm = Vue.prototype;
         let my = store.getters.user;
         if (!my) {
-            let res = await vm.$api("User/GetMineInfo");
+            let res = await vm.$api("user/getMineInfo");
             if (res instanceof Error) return;
-            await store.dispatch('user/setUser', res.user)
-            await store.dispatch('user/setPermissions', res.permissions)
+            await store.dispatch('user/setUser', res.user);
+            await store.dispatch('user/setPermissions', res.permissions);
+            await CoreEngine.onUserChange(res.user.id);
         }
         let permissions = store.getters.permissions;
         if (!permissions[key]) {
-            router.push({path: '/403'})
+            router.push({path: '/403'});
         } else {
-            next()
+            next();
         }
     }
 });
 
-export default router
+export default router;
