@@ -86,12 +86,13 @@ export default class RelicModule implements CoreEngineModule {
             let set = this.sets.get(item.suitId);
             if (set) {
                 set.allRanks.push(item.level);
+                set.maxRank = Math.max(set.maxRank, item.level);
             }
         }
     }
 
     async onUserChange(uid: number) {
-        let key = `relic`;
+        let key = "relic";
         let change = false;
         let cache = localStorage.getItem(key);
         let cacheObj;
@@ -134,11 +135,36 @@ export default class RelicModule implements CoreEngineModule {
         }
     }
 
+    async refreshRelicList() {
+        let lastModify = 0;
+        let list = await CoreEngine.reqApi("relic/getList", {lastModify: lastModify});
+        this.list = list.map((it) => RelicInfo.fromServer(it));
+        for (let relic of this.list) {
+            if (relic.modifyTime && lastModify < relic.modifyTime) {
+                lastModify = relic.modifyTime;
+            }
+        }
+        let cacheObj: any = {};
+        cacheObj.uid = CoreEngine.curUid;
+        cacheObj.list = list;
+        cacheObj.lastModify = lastModify;
+        localStorage.setItem("relic", JSON.stringify(cacheObj));
+    }
+
     getRelicOptions(): RelicSetData[] {
         let list = new Array<RelicSetData>();
         for (let it of this.sets.values()) {
             list.push(it);
         }
+        list.sort((a, b) => {
+            if (a.maxRank != b.maxRank) {
+                //星级倒序
+                return b.maxRank - a.maxRank;
+            } else {
+                //id正序
+                return a.id - b.id;
+            }
+        });
         return list;
     }
 }

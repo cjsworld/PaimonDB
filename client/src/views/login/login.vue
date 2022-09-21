@@ -17,7 +17,7 @@
                 <el-button type="primary" style="width: 100%" @click="login()">登录</el-button>
             </el-form-item>
             <el-form-item>
-                <el-link type="primary" :underline="false" style="float: right" @click="isLogin = false">已有账号？去注册</el-link>
+                <el-link type="primary" :underline="false" style="float: right" @click="isLogin = false">没有账号？去注册</el-link>
             </el-form-item>
         </el-form>
         <el-form :model="registerForm" :rules="regRules" ref="registerForm"

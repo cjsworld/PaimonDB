@@ -1,7 +1,7 @@
 <template>
     <el-form ref="relicForm" :model="relicInfo" :rules="relicRules" label-width="60px" size="small" style="position: relative">
         <el-form-item label="套装">
-            <el-select v-model="relicInfo.setId" @change="onRelicChange" filterable style="width: 200px" class="avatar-select">
+            <el-select v-model="relicInfo.setId" filterable style="width: 200px" class="avatar-select">
                 <el-option v-for="(item,_) in relicOptions" :key="item.id" :value="item.id"
                            :label="item.name" class="avatar-option">
                     <el-avatar :src="item.icon"></el-avatar>
@@ -13,7 +13,7 @@
             </el-select>
         </el-form-item>
         <el-form-item label="星级">
-            <el-radio-group v-model="relicInfo.rank" size="small" @change="rankChange">
+            <el-radio-group v-model="relicInfo.rank" size="small">
                 <el-radio-button :label="4">4星</el-radio-button>
                 <el-radio-button :label="5">5星</el-radio-button>
             </el-radio-group>
@@ -23,7 +23,7 @@
                              style="width: 100px"></el-input-number>
         </el-form-item>
         <el-form-item label="位置">
-            <el-radio-group v-model="relicInfo.slotIndex" size="mini" class="relic-radio" @change="slotChange">
+            <el-radio-group v-model="relicInfo.slotIndex" size="mini" class="relic-radio">
                 <el-radio v-for="s in slots" :key="s.index" :label="s.index">
                     <el-image class="slot-img" :src="s.icon" alt=""></el-image>
                 </el-radio>
@@ -40,7 +40,7 @@
             <span style="margin-left: 2px" v-if="relicInfo.mainPropType.isPercent">%</span>
         </el-form-item>
         <el-form-item :label="index === 1 ? `副属性` : ''" v-for="index in 4" :key="index">
-            <el-select v-model="relicInfo[`subProp${index}`].typeId" filterable style="width: 130px">
+            <el-select v-model="relicInfo[`subProp${index}`].typeId" filterable clearable style="width: 130px">
                 <el-option v-for="item in subProps" :key="item.id" :value="item.id"
                            :label="item.name">
                 </el-option>
@@ -50,7 +50,10 @@
                              style="width: 60px;margin-left: 5px"></el-input-number>
             <span style="margin-left: 2px" v-if="relicInfo[`subProp${index}`].type.isPercent">%</span>
         </el-form-item>
-        <el-image :src="relicInfo.icon" style="position: absolute;right: 15px;top: 60px;"></el-image>
+        <el-image :src="relicInfo.icon" style="position: absolute;left: 190px;top: 60px;">
+            <div slot="error" class="image-slot">
+            </div>
+        </el-image>
     </el-form>
 </template>
 
@@ -77,7 +80,7 @@ export default {
             type: Number
         },
         relicInfo: {
-            default: () => new RelicInfo(0, 0, 5),
+            default: () => new RelicInfo(0),
             type: RelicInfo
         }
     },
@@ -91,26 +94,35 @@ export default {
         if (!this.relicInfo.setId && this.relicOptions.length > 0) {
             this.relicInfo.setId = this.relicOptions[0].id;
         }
-        this.rankChange(this.relicInfo.rank);
-        this.slotChange(this.relicInfo.slotIndex);
+    },
+    watch: {
+        'relicInfo.setId': {
+            handler(setId) {
+                this.relicData = CoreEngine.relic.sets.get(setId);
+            },
+            immediate: true
+        },
+        'relicInfo.rank': {
+            handler(rank) {
+                this.subProps = [];
+                let rankData = CoreEngine.relic.ranks.get(rank);
+                if (rankData) {
+                    this.subProps = rankData.getSubPropTypes()
+                }
+            },
+            immediate: true
+        },
+        'relicInfo.slotIndex': {
+            handler(slotIndex) {
+                this.mainProps = RelicSlotType.getByIndex(slotIndex).mainPropTypes
+                if (!this.mainProps.find(e => e.id === this.relicInfo.mainPropTypeId)) {
+                    this.relicInfo.mainPropTypeId = RelicSlotType.getByIndex(slotIndex).mainPropTypes[0].id;
+                }
+            },
+            immediate: true
+        },
     },
     methods: {
-        onRelicChange() {
-            this.relicData = CoreEngine.relic.sets.get(this.relicInfo.setId)
-        },
-        rankChange(rank) {
-            this.subProps = [];
-            let rankData = CoreEngine.relic.ranks.get(rank);
-            if (rankData) {
-                this.subProps = rankData.getSubPropTypes()
-            }
-        },
-        slotChange(slotIndex) {
-            this.mainProps = RelicSlotType.getByIndex(slotIndex).mainPropTypes
-            if (!this.mainProps.find(e => e.id === this.relicInfo.mainPropTypeId)) {
-                this.relicInfo.mainPropTypeId = RelicSlotType.getByIndex(slotIndex).mainPropTypes[0].id;
-            }
-        }
     }
 }
 </script>
