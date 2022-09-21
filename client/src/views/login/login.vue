@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-form :model="loginForm" :rules="loginRules" ref="loginForm"
-                 v-if="isLogin"
+                 v-show="isLogin"
                  label-position="left"
                  label-width="0px"
                  class="login-container"
@@ -21,7 +21,7 @@
             </el-form-item>
         </el-form>
         <el-form :model="registerForm" :rules="regRules" ref="registerForm"
-                 v-else
+                 v-show="!isLogin"
                  class="login-container"
                  @keyup.enter.native="register()">
             <h3 class="title">注册</h3>
