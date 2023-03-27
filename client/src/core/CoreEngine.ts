@@ -18,7 +18,8 @@ class CoreEngine {
     private inited = false;
     private modules = new Array<CoreEngineModule>();
 
-    dataVersion = "3.0_R9624836_S9598838_D9617080";
+    // dataVersion = "3.0_R9624836_S9598838_D9617080";
+    dataVersion = "3.5_R13156424_S13135246_D13153488";
 
     upgrade: UpgradeModule;
     affix: AffixModule;
@@ -44,14 +45,14 @@ class CoreEngine {
         }
         console.log("CoreEngine init start");
         let startTime = new Date();
-        //this.textMap = await this.readJsonResource("TextMapCHS");
+        // this.textMap = await this.readJsonResource("TextMapCHS");
         this.textMap = await this.readJsonResource("TextMapCHSMini");
         for (let mod of this.modules) {
             await mod.init();
         }
         this.textMap = undefined;
-        //console.log(JSON.stringify(this.textMapMini));
-        //this.textMapMini = undefined;
+        // console.log(JSON.stringify(this.textMapMini));
+        // this.textMapMini = undefined;
         this.inited = true;
         let diff = new Date().valueOf() - startTime.valueOf();
         console.log(`CoreEngine init finish in ${diff} ms`);
@@ -79,7 +80,7 @@ class CoreEngine {
     }
 
     textMap: any
-    //textMapMini = {};
+    // textMapMini: any = {};
 
     getText(hash: number): string {
         if (!this.textMap || !hash) {
@@ -89,7 +90,7 @@ class CoreEngine {
             if (!s) {
                 return "";
             } else {
-                //this.textMapMini[hash.toString()] = s;
+                // this.textMapMini[hash.toString()] = s;
                 return s;
             }
         }
