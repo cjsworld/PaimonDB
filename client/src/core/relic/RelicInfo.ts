@@ -94,7 +94,12 @@ export default class RelicInfo {
      * 图标
      */
     get icon(): string {
-        return this.slotData.icon;
+        let set: RelicSetData | null = this.relicSetData;
+        if (set != null) {
+            return set.slots[this.slotIndex]!!.icon;
+        } else {
+            return ""
+        }
     }
 
     /**
@@ -138,12 +143,30 @@ export default class RelicInfo {
         }
     }
 
-    constructor(setId: number, slotIndex: number, rank: number) {
+    constructor(setId: number, slotIndex: number = 0, rank: number = 5) {
         this.setId = setId;
         this.slotIndex = slotIndex;
         this.rank = rank;
         this.mainPropTypeId = RelicSlotType.getByIndex(this.slotIndex).mainPropTypes[0].id;
         this.level = 20;
+    }
+
+    copy(): RelicInfo {
+        let info = new RelicInfo(this.setId, this.slotIndex, this.rank);
+        info.level = this.level;
+        info.mainPropTypeId = this.mainPropTypeId;
+        info.subProp1.typeId = this.subProp1.typeId;
+        info.subProp1.value = this.subProp1.value;
+        info.subProp2.typeId = this.subProp2.typeId;
+        info.subProp2.value = this.subProp2.value;
+        info.subProp3.typeId = this.subProp3.typeId;
+        info.subProp3.value = this.subProp3.value;
+        info.subProp4.typeId = this.subProp4.typeId;
+        info.subProp4.value = this.subProp4.value;
+        info.equippedAvatar = this.equippedAvatar;
+        info.id = this.id;
+        info.modifyTime = this.modifyTime;
+        return info;
     }
 
     static fromServer(json: any): RelicInfo {
@@ -181,6 +204,9 @@ export default class RelicInfo {
         json.subProp4Value = this.subProp4.value;
         if (this.equippedAvatar) {
             json.equippedAvatar = this.equippedAvatar;
+        }
+        if (this.id) {
+            json.id = this.id;
         }
         return json;
     }

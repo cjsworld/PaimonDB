@@ -4,6 +4,7 @@ import './plugins/element.js'
 import './common/common'
 import './common/config'
 import router from './router'
+import VueResizeObserver from "vue-resize-observer";
 
 import './styles/np.css'
 import '@/styles/index.scss' // global css
@@ -12,6 +13,7 @@ import comp from './components'
 
 import store from './store'
 
+Vue.use(VueResizeObserver)
 Vue.use(comp);
 Vue.prototype.$api = api;
 

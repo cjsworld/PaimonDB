@@ -42,7 +42,7 @@ export default class AvatarModule implements CoreEngineModule {
                 //id正序
                 return a.id - b.id;
             }
-        })
+        });
         return list;
     }
     

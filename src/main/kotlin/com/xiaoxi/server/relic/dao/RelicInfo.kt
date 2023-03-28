@@ -106,7 +106,10 @@ class RelicInfo(root: JsonObject = JsonObject()) : MongoDBObject(root), ToVO {
     @VO
     var modifyTime by LongField
 
-    fun fromClient(json: JsonObject) {
+    fun fromClient(json: JsonObject): RelicInfo {
+        if (json.containsKey("id")) {
+            id = json.getInteger("id")
+        }
         setId = json.getInteger("setId")
         rank = json.getInteger("rank")
         slotIndex = json.getInteger("slotIndex")
@@ -121,6 +124,7 @@ class RelicInfo(root: JsonObject = JsonObject()) : MongoDBObject(root), ToVO {
         subProp4TypeId = json.getString("subProp4TypeId")
         subProp4Value = json.getDouble("subProp4Value")
         equippedAvatar = json.getInteger("equippedAvatar")
+        return this
     }
 
     override fun equals(other: Any?): Boolean {

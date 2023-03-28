@@ -21,11 +21,12 @@ repositories {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation "com.xiaoxi:xserver-core:1.4.3"
-    implementation "com.xiaoxi:xserver-mongo:1.4.1"
+    implementation "com.xiaoxi:xserver-core:1.4.4"
+    implementation "com.xiaoxi:xserver-mongo:1.4.2"
     implementation "com.xiaoxi:xserver-auth:1.4.0"
 
-    implementation 'com.auth0:java-jwt:3.19.2'
+    implementation 'io.vertx:vertx-mail-client:4.3.3'
+    implementation 'com.auth0:java-jwt:4.0.0'
     implementation 'org.bouncycastle:bcprov-jdk15on:1.70'
 }
 

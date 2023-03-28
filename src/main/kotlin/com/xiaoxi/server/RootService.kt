@@ -14,6 +14,7 @@ import com.xserver.core.Service
 import com.xserver.core.fiber.LockerManager
 import com.xserver.core.http.HttpServer
 import com.xserver.core.http.RoutingHttpHandler
+import com.xserver.core.util.isValid
 import com.xserver.mongo.MongoClient
 import io.vertx.core.VertxOptions
 import io.vertx.core.http.HttpServerOptions
@@ -36,6 +37,7 @@ object RootService : Service, MainServer.Factory {
     val ctrl = AuthControllerManager(auth)
 
     lateinit var jwt: JwtES256Util
+    lateinit var webUrl: String
 
     override suspend fun init() {
         val dbName = MainServer.config.getString("Name")
@@ -53,6 +55,7 @@ object RootService : Service, MainServer.Factory {
         http.addVueRouter("/")
         http.addHttpHandler(RoutingHttpHandler("/api", ctrl))
 
+        webUrl = MainServer.config.getString("WebUrl").isValid("WebUrl未配置")
 
         MainServer.addSvc(SystemService)
         MainServer.addSvc(UserService)

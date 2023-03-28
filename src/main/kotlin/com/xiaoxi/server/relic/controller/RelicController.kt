@@ -2,9 +2,11 @@ package com.xiaoxi.server.relic.controller
 
 import com.xiaoxi.server.relic.dao.RelicInfo
 import com.xiaoxi.server.user.BaseAuthController
+import com.xserver.core.json.jobjectOf
 import com.xserver.core.util.timestamp
 import com.xserver.mongo.MongoClient
 import com.xserver.mongo.eq
+import com.xserver.mongo.nextID
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 
@@ -54,5 +56,32 @@ class RelicController : BaseAuthController() {
         }.exec()
         update.exec()
         return count
+    }
+
+    @RPC
+    //@IncludedBy(Permissions.IndexView)
+    suspend fun addOrEdit(relic: JsonObject) {
+        val uid = user.id
+        var id = relic.getInteger("id")
+        if (id == null) {
+            id = RelicInfo.getUserRelicMaxId(uid) + 1
+        }
+        val r = RelicInfo().fromClient(relic)
+        r.modifyTime = timestamp()
+        MongoClient.def.update(RelicInfo::class) {
+            where(RelicInfo::userId eq uid)
+            where(RelicInfo::id eq id)
+            update = jobjectOf("\$set" to r._raw)
+            upsert = true
+        }.exec()
+    }
+
+    @RPC
+    //@IncludedBy(Permissions.IndexView)
+    suspend fun delete(id: Int) {
+        MongoClient.def.delete(RelicInfo::class) {
+            where(RelicInfo::userId eq user.id)
+            where(RelicInfo::id eq id)
+        }.exec()
     }
 }

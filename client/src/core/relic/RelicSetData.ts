@@ -34,6 +34,11 @@ export default class RelicSetData {
      */
     allRanks = new Array<number>();
 
+    /**
+     * 套装最大星级
+     */
+    maxRank = 0;
+
     get icon(): string {
         return this.slots.find(e => e)!!.icon;
     }

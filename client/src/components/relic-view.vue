@@ -42,7 +42,7 @@ export default {
             type: Number
         },
         relicInfo: {
-            default: () => new RelicInfo(0, 0, 5),
+            default: () => new RelicInfo(0),
             type: RelicInfo
         }
     },

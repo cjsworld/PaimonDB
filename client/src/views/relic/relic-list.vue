@@ -1,28 +1,27 @@
 <template>
-    <div>
-        <el-form :model="queryForm" size="small" inline>
+    <div v-resize="changeTableMaxHeight">
+        <el-form id="fix-div" :model="queryForm" size="small" inline>
             <el-form-item label="套装">
-                <el-select v-model="queryForm.setId" @change="onQueryChange" filterable style="width: 200px" class="avatar-select">
-                    <el-option v-for="(item,_) in relicOptions" :key="item.id" :value="item.id"
+                <el-select v-model="queryForm.setIdList" @change="onQueryChange" filterable multiple clearable style="width: 250px">
+                    <el-option v-for="item in relicOptions" :key="item.id" :value="item.id"
                                :label="item.name" class="avatar-option">
                         <el-avatar :src="item.icon"></el-avatar>
                         <div>{{ item.name }}</div>
                     </el-option>
-                    <template slot="prefix">
-                        <el-avatar class="avatar-prefix" src="" alt=""></el-avatar>
-                    </template>
                 </el-select>
             </el-form-item>
             <el-form-item label="位置">
-                <el-radio-group v-model="queryForm.slotIndex" size="mini" class="relic-radio" @change="onQueryChange">
-                    <el-radio v-for="s in slots" :key="s.index" :label="s.index">
-                        <el-image class="slot-img" :src="s.icon" alt=""></el-image>
-                    </el-radio>
-                </el-radio-group>
+                <el-checkbox-group v-model="queryForm.slotIndexList" @change="onQueryChange">
+                    <el-checkbox v-for="item in slots" :key="item.index" :label="item.index">{{item.shortName}}</el-checkbox>
+                </el-checkbox-group>
             </el-form-item>
 
             <el-form-item>
+                <el-button type="primary" @click="showAddDialog">添加</el-button>
+            </el-form-item>
+            <el-form-item>
                 <el-upload
+                    style="display: inline"
                     action=""
                     :limit="1"
                     :show-file-list="false"
@@ -31,62 +30,134 @@
                 </el-upload>
             </el-form-item>
         </el-form>
-        <el-table :data="relicList">
-            <el-table-column prop="id" label="ID" width="60" sortable></el-table-column>
-            <el-table-column prop="relicSetData.name" label="套装" width="140" sortable></el-table-column>
-            <el-table-column prop="slotData.type.name" label="套装" width="80" sortable></el-table-column>
-            <el-table-column prop="rank" label="星级" width="80" sortable></el-table-column>
-            <el-table-column prop="level" label="等级" width="80" sortable></el-table-column>
-            <el-table-column prop="mainPropType.name" label="主属性" width="120" sortable></el-table-column>
-            <el-table-column prop="mainProp.displayValue" label="主属性数值" width="120" sortable></el-table-column>
-            <el-table-column prop="subProp1.type.name" label="副词条1" width="120" sortable></el-table-column>
-            <el-table-column prop="subProp1.displayValue" label="副词条1数值" width="140" sortable></el-table-column>
-            <el-table-column prop="subProp2.type.name" label="副词条2" width="120" sortable></el-table-column>
-            <el-table-column prop="subProp2.displayValue" label="副词条2数值" width="140" sortable></el-table-column>
-            <el-table-column prop="subProp3.type.name" label="副词条3" width="120" sortable></el-table-column>
-            <el-table-column prop="subProp3.displayValue" label="副词条3数值" width="140" sortable></el-table-column>
-            <el-table-column prop="subProp4.type.name" label="副词条4" width="120" sortable></el-table-column>
-            <el-table-column prop="subProp4.displayValue" label="副词条4数值" width="140" sortable></el-table-column>
-            <el-table-column prop="equippedAvatarName" label="已装备的角色" width="140" sortable></el-table-column>
-        </el-table>
+        <u-table ref="table" :data="relicList" :height="tableHeight" :row-height="60" use-virtual>
+            <u-table-column prop="id" label="ID" width="60" sortable></u-table-column>
+            <u-table-column prop="relicSetData.name" label="套装" width="165" sortable>
+                <template v-slot="scope">
+                    <el-avatar :size="40" shape="square" :src="scope.row.icon" style="vertical-align: middle; margin-right: 3px"></el-avatar>
+                    <span>{{scope.row.relicSetData.name}}</span>
+                </template>
+            </u-table-column>
+            <u-table-column prop="slotData.type.name" label="位置" width="75" sortable></u-table-column>
+            <u-table-column prop="rank" label="星级" width="75" sortable></u-table-column>
+            <u-table-column prop="level" label="等级" width="75" sortable></u-table-column>
+            <u-table-column prop="mainPropType.name" label="主属性" width="120" sortable></u-table-column>
+            <u-table-column prop="mainProp.displayValue" label="数值" width="80" sortable>
+                <template v-slot="scope">
+                    {{scope.row.mainProp.displayValue}}{{scope.row.mainPropType.isPercent ? "%" : ""}}
+                </template>
+            </u-table-column>
+            <u-table-column prop="subProp1.type.name" label="副词条1" width="100" sortable></u-table-column>
+            <u-table-column prop="subProp1.displayValue" label="数值" width="75" sortable>
+                <template v-slot="scope">
+                    {{scope.row.subProp1.displayValue}}{{scope.row.subProp1.type.isPercent ? "%" : ""}}
+                </template>
+            </u-table-column>
+            <u-table-column prop="subProp2.type.name" label="副词条2" width="100" sortable></u-table-column>
+            <u-table-column prop="subProp2.displayValue" label="数值" width="75" sortable>
+                <template v-slot="scope">
+                    {{scope.row.subProp2.displayValue}}{{scope.row.subProp2.type.isPercent ? "%" : ""}}
+                </template>
+            </u-table-column>
+            <u-table-column prop="subProp3.type.name" label="副词条3" width="100" sortable></u-table-column>
+            <u-table-column prop="subProp3.displayValue" label="数值" width="75" sortable>
+                <template v-slot="scope">
+                    {{scope.row.subProp3.displayValue}}{{scope.row.subProp3.type.isPercent ? "%" : ""}}
+                </template>
+            </u-table-column>
+            <u-table-column prop="subProp4.type.name" label="副词条4" width="100" sortable></u-table-column>
+            <u-table-column prop="subProp4.displayValue" label="数值" width="75" sortable>
+                <template v-slot="scope">
+                    {{scope.row.subProp4.displayValue}}{{scope.row.subProp4.type.isPercent ? "%" : ""}}
+                </template>
+            </u-table-column>
+            <u-table-column prop="equippedAvatarName" label="已装备" width="100" sortable></u-table-column>
+            <u-table-column label="操作">
+                <template v-slot="scope">
+                    <el-button type="primary" size="mini" @click="showEditDialog(scope.row)">编辑</el-button>
+                    <el-button type="danger" size="mini" @click="deleteRelic(scope.row)">删除</el-button>
+                </template>
+            </u-table-column>
+        </u-table>
+
+        <el-dialog :title="editDialog.title" :visible.sync="editDialog.visible" width="350px" :close-on-click-modal="false"
+                   @close="closeEditDialog">
+            <relic-editor ref="relicEditor" :relic-info="editDialog.relicInfo"></relic-editor>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="closeEditDialog">取 消</el-button>
+                <el-button type="primary" @click="addOrEditRelic">确 定</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
 <script>
 
 import {Message} from "element-ui";
+import {UTable, UTableColumn} from "umy-ui";
+import RelicEditor from "@/components/relic-editor";
 import CoreEngine from "@/core/CoreEngine";
 import RelicSlotType from "@/core/relic/RelicSlotType";
 import RelicImporter from "@/core/relic/RelicImporter";
+import RelicInfo from "@/core/relic/RelicInfo";
 
 export default {
     name: "RelicList",
+    components: {
+        UTable,
+        UTableColumn,
+        RelicEditor
+    },
     data() {
         return {
+            tableHeight: 0,
+
             relicOptions: [],
             slots: [],
+            avatarOptions: [],
 
             queryForm: {
-                setId: undefined,
-                slotIndex: undefined,
+                setIdList: [],
+                slotIndexList: [],
             },
 
             relicList: [],
+
+            editDialog: {
+                title: "",
+                visible: false,
+                relicInfo: new RelicInfo(undefined)
+            }
         }
     },
     created() {
         this.relicOptions = CoreEngine.relic.getRelicOptions();
+        this.avatarOptions = CoreEngine.avatar.getAvatarOptions();
         this.slots = RelicSlotType.All;
-
-        this.relicList = CoreEngine.relic.list;
+        this.getList();
+    },
+    mounted() {
+        this.$nextTick(() => {
+            this.changeTableMaxHeight()
+        })
     },
     methods: {
+        changeTableMaxHeight() {
+            let fixHeight = document.getElementById("fix-div").offsetHeight;
+            let tmp = document.body.offsetHeight - fixHeight - (45 + 15 * 2 + 10 + 18);
+            tmp = tmp < 500 ? 500 : tmp;
+            this.tableHeight = tmp;
+        },
+        getList() {
+            this.relicList = CoreEngine.relic.list;
+            this.onQueryChange();
+        },
         onQueryChange() {
             this.relicList = CoreEngine.relic.list.filter(it => {
-                if (this.queryForm.setId && this.queryForm.setId !== it.setId) {
+                if (this.queryForm.setIdList.length > 0 && this.queryForm.setIdList.indexOf(it.setId) === -1) {
                     return false;
                 }
-                if (this.queryForm.slotIndex >= 0 && this.queryForm.slotIndex !== it.slotIndex) {
+                if (this.queryForm.slotIndexList.length > 0 && this.queryForm.slotIndexList.indexOf(it.slotIndex) === -1) {
                     return false;
                 }
                 return true;
@@ -104,7 +175,45 @@ export default {
                     message: `导入成功，新增圣遗物：${res}`
                 });
             }
+            await CoreEngine.relic.refreshRelicList();
+            this.getList();
             uploader.clearFiles();
+        },
+        showAddDialog() {
+            this.editDialog.title = "新增圣遗物信息"
+            this.editDialog.visible = true;
+            this.$nextTick(() => {
+                this.editDialog.relicInfo = new RelicInfo(undefined);
+            });
+        },
+        showEditDialog(row) {
+            this.editDialog.title = "编辑圣遗物信息"
+            this.editDialog.visible = true;
+            this.$nextTick(() => {
+                this.editDialog.relicInfo = row.copy();
+            });
+        },
+        closeEditDialog() {
+            this.editDialog.visible = false;
+        },
+        addOrEditRelic() {
+            this.$refs.relicEditor.$refs.relicForm.validate(async valid => {
+                if (valid) {
+                    let res = await this.$api("relic/addOrEdit", {relic: this.editDialog.relicInfo.toServer()})
+                    if (res instanceof Error) return
+                    this.closeEditDialog();
+                    this.$message.success("操作成功");
+                    await CoreEngine.relic.refreshRelicList();
+                    this.getList();
+                }
+            })
+        },
+        async deleteRelic(row) {
+            let res = await this.$api("relic/delete", {id: row.id})
+            if (res instanceof Error) return
+            this.$message.success("删除成功");
+            await CoreEngine.relic.refreshRelicList();
+            this.getList();
         }
     }
 }
@@ -112,16 +221,6 @@ export default {
 </script>
 
 <style scoped>
-::v-deep .avatar-select .el-input__inner {
-    padding-left: 38px;
-    vertical-align: middle;
-}
-
-.avatar-select .avatar-prefix {
-    vertical-align: middle;
-    width: 25px;
-    height: 25px;
-}
 
 .avatar-option {
     margin: 5px 0;
@@ -140,30 +239,8 @@ export default {
     vertical-align: middle
 }
 
-::v-deep .relic-radio label {
-    margin-right: 0px;
-}
-
-::v-deep .relic-radio .el-radio__input {
-    display: none;
-}
-
-::v-deep .relic-radio .el-radio__label {
-    padding-left: 5px;
-}
-
-.slot-img {
-    width: 35px;
-    height: 35px;
-}
-
-::v-deep .relic-radio .is-checked .el-image {
-    border: 2px solid #409eff;
-}
-
-::v-deep .el-select .el-input__inner {
-    background-color: unset;
-    color: unset;
+.el-checkbox {
+    margin-right: 10px
 }
 
 </style>

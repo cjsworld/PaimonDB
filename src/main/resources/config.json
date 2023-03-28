@@ -6,5 +6,6 @@
         "host": "localhost",
         "password": null,
         "port": 27017
-    }
+    },
+    "WebUrl": "http://"
 }
