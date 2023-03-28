@@ -50,6 +50,7 @@ object UserService : BaseService() {
             admin.state = UserState.Enable
             admin.roleId = User.SuperID
             admin.createTime = timestamp()
+            admin.lastLogin = timestamp()
             admin.insert()
         }
     }
